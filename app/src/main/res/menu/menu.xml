@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/search"
+        android:title="@string/action_bar_search"
+        android:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:actionProviderClass="com.idisfkj.hightcopywx.main.PlusActionProvider"
+        android:icon="@drawable/plus"
+        android:title="@string/plus"
+        android:showAsAction="ifRoom" />
+
+</menu>

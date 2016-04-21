@@ -1,11 +1,27 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="colorPrimary">@color/action_bar_color</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <item name="android:actionBarStyle">@style/WXActionBar</item>
+        <item name="android:itemBackground">@drawable/action_bar_item_bg</item>
+        <item name="android:itemTextAppearance">@style/WXItemOverflow</item>
+    </style>
+    
+    <style name="WXActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">#303537</item>
+        <item name="android:titleTextStyle">@style/WXTitleStytle</item>
+    </style>
+
+    <style name="WXTitleStytle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#cfcfcf</item>
+    </style>
+
+    <style name="WXItemOverflow" parent="@android:style/Widget.ActionButton.Overflow">
+        <item name="android:textColor">#cfcfcf</item>
     </style>
 
 </resources>

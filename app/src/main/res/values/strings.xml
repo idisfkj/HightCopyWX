@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">HightCopyWX</string>
+    <string name="app_name">高仿微信</string>
+    <string name="tab_weiXin">微信</string>
+    <string name="tab_friend">通信录</string>
+    <string name="tab_find">发现</string>
+    <string name="tab_me">我</string>
+    <string name="action_bar_search">search</string>
+    <string name="plus">plus</string>
+    <string name="multi_chat">发起群聊</string>
+    <string name="add_friends">添加朋友</string>
+    <string name="scan">扫一扫</string>
+    <string name="pay_money">收付款</string>
+    <string name="help_devise">帮助与反馈</string>
 </resources>
