@@ -30,7 +30,7 @@ public class ChatModleImp implements ChatModle {
 
     @Override
     public void requestData(final requestListener listener, final String chatContent, final String number, final String regId, final ChatMessageDataHelper helper) {
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, UrlUtils.ChatUrl(chatContent, number,regId)
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, UrlUtils.ChatUrl(chatContent, number, regId)
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -46,14 +46,14 @@ public class ChatModleImp implements ChatModle {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Log.d("TAG",volleyError.getMessage());
+                Log.d("TAG", volleyError.getMessage());
                 listener.onError(volleyError.getMessage());
             }
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String,String> header = new HashMap<>();
-                header.put("Authorization","key="+ App.APP_SECRET_KEY);
+                HashMap<String, String> header = new HashMap<>();
+                header.put("Authorization", "key=" + App.APP_SECRET_KEY);
                 return header;
             }
         };
@@ -61,12 +61,35 @@ public class ChatModleImp implements ChatModle {
     }
 
     @Override
-    public void insertData(ChatMessageInfo info,ChatMessageDataHelper helper) {
+    public void insertData(ChatMessageInfo info, ChatMessageDataHelper helper) {
+        helper.insert(info);
+
+    }
+
+    @Override
+    public void initData(ChatMessageDataHelper helper, String mRegId, String mNumber, String userName) {
+        ChatMessageInfo info = new ChatMessageInfo();
+        if (mRegId.equals(App.DEVELOPER_ID)) {
+            info.setMessage(App.DEVELOPER_MESSAGE);
+            info.setRegId(App.DEVELOPER_ID);
+            info.setSendNumber(App.DEVELOPER_NUMBER);
+            info.setFlag(0);
+            info.setTime(CalendarUtils.getCurrentDate());
+            info.setReceiverNumber(SPUtils.getString("userPhone"));
+        } else {
+            info.setMessage(String.format(App.HELLO_MESSAGE,userName));
+            info.setRegId(mRegId);
+            info.setSendNumber(mNumber);
+            info.setFlag(2);
+            info.setTime(CalendarUtils.getCurrentDate());
+            info.setReceiverNumber(SPUtils.getString("userPhone"));
+        }
         helper.insert(info);
     }
 
-    public interface requestListener{
-        void onSucceed(ChatMessageInfo chatMessageInfo,ChatMessageDataHelper helper);
+    public interface requestListener {
+        void onSucceed(ChatMessageInfo chatMessageInfo, ChatMessageDataHelper helper);
+
         void onError(String errorMessage);
     }
 }

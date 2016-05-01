@@ -25,7 +25,7 @@ public class WXDataHelper extends BaseDataHelper {
         return DataProvider.WXS_CONTENT_URI;
     }
 
-    public static final class WXItemDataInfo implements BaseColumns{
+    public static final class WXItemDataInfo implements BaseColumns {
         public WXItemDataInfo() {
         }
 
@@ -36,6 +36,7 @@ public class WXDataHelper extends BaseDataHelper {
         public static final String TIME = "time";
         public static final String REGID = "regId";
         public static final String NUMBER = "number";
+        public static final String CURRENT_ACCOUNT = "currentAccount";
 
         public static final SQLiteTable TABLE = new SQLiteTable(TABLE_NAME)
                 .addColumn(PICTURE_URL, Column.DataType.TEXT)
@@ -43,7 +44,8 @@ public class WXDataHelper extends BaseDataHelper {
                 .addColumn(CONTENT, Column.DataType.TEXT)
                 .addColumn(TIME, Column.DataType.TEXT)
                 .addColumn(REGID, Column.DataType.TEXT)
-                .addColumn(NUMBER, Column.DataType.TEXT);
+                .addColumn(NUMBER, Column.DataType.TEXT)
+                .addColumn(CURRENT_ACCOUNT, Column.DataType.TEXT);
     }
 
     public ContentValues getContentValues(WXItemInfo itemInfo) {
@@ -54,12 +56,13 @@ public class WXDataHelper extends BaseDataHelper {
         values.put(WXItemDataInfo.TIME, itemInfo.getTime());
         values.put(WXItemDataInfo.REGID, itemInfo.getRegId());
         values.put(WXItemDataInfo.NUMBER, itemInfo.getNumber());
+        values.put(WXItemDataInfo.CURRENT_ACCOUNT, itemInfo.getCurrentAccount());
         return values;
     }
 
     public Cursor query(int id) {
         Cursor cursor = query(null, WXItemDataInfo._ID + "=?"
-                , new String[]{String.valueOf(id)}, null);
+                , new String[]{String.valueOf(id)}, WXItemDataInfo._ID+" ASC");
         return cursor;
     }
 
@@ -79,5 +82,10 @@ public class WXDataHelper extends BaseDataHelper {
         int row = detet(WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
                 , new String[]{regId, number});
         return row;
+    }
+
+    public android.support.v4.content.CursorLoader getCursorLoader(String currentAccout) {
+        return getV4CursorLoader(null, WXItemDataInfo.CURRENT_ACCOUNT + "=?"
+                , new String[]{currentAccout}, WXItemDataInfo._ID + " ASC");
     }
 }

@@ -1,11 +1,9 @@
 package com.idisfkj.hightcopywx.wx.presenter;
 
-import com.idisfkj.hightcopywx.beans.WXItemInfo;
+import com.idisfkj.hightcopywx.dao.WXDataHelper;
 import com.idisfkj.hightcopywx.wx.model.WXModle;
 import com.idisfkj.hightcopywx.wx.model.WXModleImp;
 import com.idisfkj.hightcopywx.wx.view.WXView;
-
-import java.util.List;
 
 /**
  * Created by idisfkj on 16/4/23.
@@ -15,7 +13,6 @@ public class WXPresentImp implements WXPresent{
 
     private WXModle mWXModle;
     private WXView mWXView;
-    private List<WXItemInfo> mList;
 
     public WXPresentImp(WXView wxView) {
         mWXView = wxView;
@@ -23,9 +20,8 @@ public class WXPresentImp implements WXPresent{
     }
 
     @Override
-    public void loadData() {
-        mList = mWXModle.initData();
-        mWXView.setData(mList);
+    public void initData(WXDataHelper helper) {
+        mWXModle.initData(helper);
     }
 
 }

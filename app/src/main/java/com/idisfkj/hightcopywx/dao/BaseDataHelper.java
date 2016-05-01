@@ -54,4 +54,8 @@ public abstract class BaseDataHelper {
     protected final CursorLoader getCursorLoader(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         return new CursorLoader(mContext, getContentUri(), projection, selection, selectionArgs, sortOrder);
     }
+
+    protected final android.support.v4.content.CursorLoader getV4CursorLoader(String[] projection,String selection,String[] selectionArgs,String sortOrder){
+        return new android.support.v4.content.CursorLoader(mContext,getContentUri(),projection,selection,selectionArgs,sortOrder);
+    }
 }

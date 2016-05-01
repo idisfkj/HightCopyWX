@@ -11,6 +11,15 @@ public class WXItemInfo {
     private String time;
     private String regId;
     private String number;
+    private String currentAccount;
+
+    public String getCurrentAccount() {
+        return currentAccount;
+    }
+
+    public void setCurrentAccount(String currentAccount) {
+        this.currentAccount = currentAccount;
+    }
 
     public String getNumber() {
         return number;

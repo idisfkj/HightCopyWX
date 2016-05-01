@@ -36,8 +36,13 @@ public class ChatPresenterImp implements ChatPresenter, ChatModleImp.requestList
     }
 
     @Override
+    public void initData(ChatMessageDataHelper helper, String mRegId, String mNumber, String userName) {
+        mChatModle.initData(helper,mRegId,mNumber,userName);
+    }
+
+    @Override
     public void onSucceed(ChatMessageInfo chatMessageInfo,ChatMessageDataHelper helper) {
-        helper.insert(chatMessageInfo);
+        mChatModle.insertData(chatMessageInfo,helper);
     }
 
     @Override

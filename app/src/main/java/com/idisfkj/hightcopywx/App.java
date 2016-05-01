@@ -22,6 +22,11 @@ public class App extends Application{
     public static final String APP_KEY = "5631746467903";
     public static final String APP_SECRET_KEY = "HxMA7STSUQMLEiDX+zo+5A==";
     public static final String TAG = "com.idisfkj.hightcopywx";
+    public static final String DEVELOPER_ID = "BA8EwyLKgNGawldnEQYbbVu+vIQsCsw/FFeka9DvZLo=";
+    public static final String DEVELOPER_NUMBER = "15779707839";
+    public static final String DEVELOPER_NAME = "idisfkj";
+    public static final String DEVELOPER_MESSAGE = "欢迎注册高仿微信App,我是该App的开发者，因为还没开发添加好友，所以目前只能与我测试互动，如有问题可以在此留言与我。";
+    public static final String HELLO_MESSAGE = "你已添加了%s，现在可以开始聊天了";
     public static String mNumber = "-1";
     public static String mRegId = "-1";
     public static SharedPreferences sp;

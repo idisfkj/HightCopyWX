@@ -26,15 +26,16 @@ public class ChatAdapter extends RecyclerViewCursorBaseAdapter<RecyclerView.View
     private View view;
     private static final int RECEIVE_MESSAGE = 0;
     private static final int SEND_MESSAGE = 1;
+    private static final int SYSTEM_MESSAGE = 2;
     private Cursor mCursor;
 
     public ChatAdapter(Context context) {
-        super(context,null);
+        super(context, null);
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
     }
 
-    public void setCursor(Cursor cursor){
+    public void setCursor(Cursor cursor) {
         mCursor = cursor;
     }
 
@@ -43,32 +44,40 @@ public class ChatAdapter extends RecyclerViewCursorBaseAdapter<RecyclerView.View
         if (viewType == RECEIVE_MESSAGE) {
             view = mLayoutInflater.inflate(R.layout.chat_receive, parent, false);
             return new ChatReceiveViewHolder(view);
-        } else {
+        } else if (viewType == SEND_MESSAGE) {
             view = mLayoutInflater.inflate(R.layout.chat_send, parent, false);
             return new ChatSendViewHolder(view);
+        } else {
+            view = mLayoutInflater.inflate(R.layout.chat_system, parent, false);
+            return new ChatSystemViewHolder(view);
         }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
-        if (holder instanceof ChatReceiveViewHolder){
-            ((ChatReceiveViewHolder)holder).chatReceiveTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
+        if (holder instanceof ChatReceiveViewHolder) {
+            ((ChatReceiveViewHolder) holder).chatReceiveTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
 //            ((ChatReceiveViewHolder)holder).chatReceivePicture.setImageDrawable();
-            ((ChatReceiveViewHolder)holder).chatReceiveContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
-        }else {
-            ((ChatSendViewHolder)holder).chatSendTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
+            ((ChatReceiveViewHolder) holder).chatReceiveContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
+        } else if (holder instanceof ChatSendViewHolder) {
+            ((ChatSendViewHolder) holder).chatSendTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
 //            ((ChatSendViewHolder)holder).chatSendPicture.setImageDrawable();
-            ((ChatSendViewHolder)holder).chatSendContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
+            ((ChatSendViewHolder) holder).chatSendContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
+        } else {
+            ((ChatSystemViewHolder)holder).chatSystemTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
+            ((ChatSystemViewHolder)holder).chatSystemContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mCursor.moveToPosition(position)){
-            if (CursorUtils.formatInt(mCursor, ChatMessageDataHelper.ChatMessageDataInfo.FLAG) == 0){
+        if (mCursor.moveToPosition(position)) {
+            if (CursorUtils.formatInt(mCursor, ChatMessageDataHelper.ChatMessageDataInfo.FLAG) == 0) {
                 return RECEIVE_MESSAGE;
-            }else {
+            } else if (CursorUtils.formatInt(mCursor, ChatMessageDataHelper.ChatMessageDataInfo.FLAG) == 1) {
                 return SEND_MESSAGE;
+            } else {
+                return SYSTEM_MESSAGE;
             }
         }
         return 0;
@@ -88,7 +97,7 @@ public class ChatAdapter extends RecyclerViewCursorBaseAdapter<RecyclerView.View
         }
     }
 
-    public static class ChatReceiveViewHolder extends RecyclerView.ViewHolder{
+    public static class ChatReceiveViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.chat_receive_time)
         TextView chatReceiveTime;
         @InjectView(R.id.chat_receive_picture)
@@ -97,6 +106,18 @@ public class ChatAdapter extends RecyclerViewCursorBaseAdapter<RecyclerView.View
         TextView chatReceiveContent;
 
         ChatReceiveViewHolder(View view) {
+            super(view);
+            ButterKnife.inject(this, view);
+        }
+    }
+
+    public static class ChatSystemViewHolder extends RecyclerView.ViewHolder {
+        @InjectView(R.id.chat_system_time)
+        TextView chatSystemTime;
+        @InjectView(R.id.chat_system_content)
+        TextView chatSystemContent;
+
+        ChatSystemViewHolder(View view) {
             super(view);
             ButterKnife.inject(this, view);
         }

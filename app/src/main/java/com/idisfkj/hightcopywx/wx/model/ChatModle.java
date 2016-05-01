@@ -8,6 +8,9 @@ import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
  * Email : idisfkj@qq.com.
  */
 public interface ChatModle {
-    void requestData(ChatModleImp.requestListener listener,String chatContent,String number,String regId,ChatMessageDataHelper helper);
+    void requestData(ChatModleImp.requestListener listener, String chatContent, String number, String regId, ChatMessageDataHelper helper);
+
     void insertData(ChatMessageInfo info, ChatMessageDataHelper helper);
+
+    void initData(ChatMessageDataHelper helper, String mRegId, String mNumber, String userName);
 }

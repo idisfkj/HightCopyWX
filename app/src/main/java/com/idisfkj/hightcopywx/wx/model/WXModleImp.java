@@ -1,6 +1,8 @@
 package com.idisfkj.hightcopywx.wx.model;
 
+import com.idisfkj.hightcopywx.App;
 import com.idisfkj.hightcopywx.beans.WXItemInfo;
+import com.idisfkj.hightcopywx.dao.WXDataHelper;
 import com.idisfkj.hightcopywx.util.CalendarUtils;
 import com.idisfkj.hightcopywx.util.SPUtils;
 
@@ -16,24 +18,17 @@ public class WXModleImp implements WXModle {
     private WXItemInfo wxItemInfo;
 
     @Override
-    public List<WXItemInfo> initData() {
+    public void initData(WXDataHelper helper) {
         mList = new ArrayList<>();
         wxItemInfo = new WXItemInfo();
-        if (!SPUtils.getString("regId").equals("BA8EwyLKgNGawldnEQYbbVu+vIQsCsw/FFeka9DvZLo=")) {
-            wxItemInfo.setTitle("idisfkj");
-            wxItemInfo.setContent("欢迎注册高仿微信App,我是该App的开发者.");
+        if (!SPUtils.getString("regId").equals(App.DEVELOPER_ID)) {
+            wxItemInfo.setTitle(App.DEVELOPER_NAME);
+            wxItemInfo.setContent(App.DEVELOPER_MESSAGE);
             wxItemInfo.setTime(CalendarUtils.getCurrentDate());
-            wxItemInfo.setRegId("BA8EwyLKgNGawldnEQYbbVu+vIQsCsw/FFeka9DvZLo=");
-            wxItemInfo.setNumber("15779707839");
-            mList.add(wxItemInfo);
-        }else {
-            wxItemInfo.setTitle("kangkang");
-            wxItemInfo.setContent("你好我们现在是朋友了.");
-            wxItemInfo.setTime(CalendarUtils.getCurrentDate());
-            wxItemInfo.setRegId("7qs+l0jHcpybN0sZlAnak8TDVwT8WcXp+Xw5sBPOAGk=");
-            wxItemInfo.setNumber("2");
-            mList.add(wxItemInfo);
+            wxItemInfo.setRegId(App.DEVELOPER_ID);
+            wxItemInfo.setNumber(App.DEVELOPER_NUMBER);
+            wxItemInfo.setCurrentAccount(SPUtils.getString("userPhone"));
+            helper.insert(wxItemInfo);
         }
-        return mList;
     }
 }

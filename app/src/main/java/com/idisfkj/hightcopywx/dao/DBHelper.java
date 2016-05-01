@@ -8,9 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by idisfkj on 16/4/28.
  * Email : idisfkj@qq.com.
  */
-public class DBHelper extends SQLiteOpenHelper{
+public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "hightcopywx.db";
-    private static final int VERSION = 2;
+    private static final int VERSION = 4;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -25,6 +25,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        WXDataHelper.WXItemDataInfo.TABLE.delete(db);
+        onCreate(db);
     }
 }

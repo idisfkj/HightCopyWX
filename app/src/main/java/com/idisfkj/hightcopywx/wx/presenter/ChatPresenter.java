@@ -9,6 +9,9 @@ import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
  * Email : idisfkj@qq.com.
  */
 public interface ChatPresenter {
-    void sendData(String chatContent,String number, String regId,ChatMessageDataHelper helper);
-    void receiveData(Intent intent,ChatMessageDataHelper helper);
+    void sendData(String chatContent, String number, String regId, ChatMessageDataHelper helper);
+
+    void receiveData(Intent intent, ChatMessageDataHelper helper);
+
+    void initData(ChatMessageDataHelper helper, String mRegId, String mNumber, String userName);
 }

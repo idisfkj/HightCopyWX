@@ -1,6 +1,7 @@
 package com.idisfkj.hightcopywx.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.idisfkj.hightcopywx.R;
-import com.idisfkj.hightcopywx.beans.WXItemInfo;
-
-import java.util.List;
+import com.idisfkj.hightcopywx.dao.WXDataHelper;
+import com.idisfkj.hightcopywx.util.CursorUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -20,21 +20,13 @@ import butterknife.InjectView;
  * Created by idisfkj on 16/4/22.
  * Email : idisfkj@qq.com.
  */
-public class WXAdapter extends RecyclerView.Adapter<WXAdapter.ViewHolder> implements View.OnClickListener {
+public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolder> implements View.OnClickListener {
     private LayoutInflater mLayoutInflater;
-    private List<WXItemInfo> mList;
     private OnItemClickListener mOnItemClickListener;
 
     public WXAdapter(Context context) {
+        super(context,null);
         mLayoutInflater = LayoutInflater.from(context);
-    }
-
-    public void addData(List<WXItemInfo> list){
-        mList = list;
-    }
-
-    public List<WXItemInfo> getData(){
-        return mList;
     }
 
     @Override
@@ -45,17 +37,11 @@ public class WXAdapter extends RecyclerView.Adapter<WXAdapter.ViewHolder> implem
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.wxItemTitle.setText(mList.get(position).getTitle());
-        holder.wxItemContent.setText(mList.get(position).getContent());
-        holder.wxItemTime.setText(mList.get(position).getTime());
-        holder.wxItemTitle.getRootView().setId(position);
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return mList.size();
+    public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
+        holder.wxItemTitle.setText(CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TITLE));
+        holder.wxItemContent.setText(CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.CONTENT));
+        holder.wxItemTime.setText(CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TIME));
+        holder.wxItemTitle.getRootView().setId(cursor.getPosition());
     }
 
     @Override

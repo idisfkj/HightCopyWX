@@ -51,6 +51,7 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
     private BroadcastReceiver receiver;
     private InputMethodManager manager;
     private ChatMessageDataHelper chatHelper;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
         ButterKnife.inject(this);
         App.mRegId = getIntent().getExtras().getString("regId");
         App.mNumber = getIntent().getExtras().getString("number");
+        userName = getIntent().getExtras().getString("userName");
         init();
     }
 
@@ -110,6 +112,9 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (loader != null && data.getCount() <= 0) {
+            mChatPresenter.initData(chatHelper, App.mRegId, App.mNumber,userName);
+        }
         mChatAdapter.changeCursor(data);
         mChatAdapter.setCursor(data);
         chatView.smoothScrollToPosition(mChatAdapter.getItemCount());

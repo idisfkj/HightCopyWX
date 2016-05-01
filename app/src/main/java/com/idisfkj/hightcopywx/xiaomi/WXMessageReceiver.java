@@ -10,8 +10,10 @@ import android.util.Log;
 import com.idisfkj.hightcopywx.App;
 import com.idisfkj.hightcopywx.beans.ChatMessageInfo;
 import com.idisfkj.hightcopywx.beans.RegisterInfo;
+import com.idisfkj.hightcopywx.beans.WXItemInfo;
 import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
 import com.idisfkj.hightcopywx.dao.RegisterDataHelper;
+import com.idisfkj.hightcopywx.dao.WXDataHelper;
 import com.idisfkj.hightcopywx.util.CalendarUtils;
 import com.idisfkj.hightcopywx.util.CursorUtils;
 import com.idisfkj.hightcopywx.util.SPUtils;
@@ -82,6 +84,18 @@ public class WXMessageReceiver extends PushMessageReceiver {
             }
             // insert user information
             helper.insert(info);
+            if (SPUtils.getString("regId").equals(App.DEVELOPER_ID)){
+                WXDataHelper wxHelper = new WXDataHelper(App.getAppContext());
+                WXItemInfo itemInfo = new WXItemInfo();
+                itemInfo.setRegId(regId);
+                itemInfo.setTitle(userName);
+                itemInfo.setNumber(number);
+                itemInfo.setContent(String.format(App.HELLO_MESSAGE, userName));
+                itemInfo.setCurrentAccount(SPUtils.getString("userPhone"));
+                itemInfo.setTime(CalendarUtils.getCurrentDate());
+                wxHelper.insert(itemInfo);
+            }
+
         } else {
             // chat information
             int index1 = mMessage.lastIndexOf("(");
