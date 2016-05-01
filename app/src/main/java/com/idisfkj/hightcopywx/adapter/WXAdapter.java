@@ -1,4 +1,4 @@
-package com.idisfkj.hightcopywx.wx;
+package com.idisfkj.hightcopywx.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +20,10 @@ import butterknife.InjectView;
  * Created by idisfkj on 16/4/22.
  * Email : idisfkj@qq.com.
  */
-public class WXAdapter extends RecyclerView.Adapter<WXAdapter.ViewHolder> {
+public class WXAdapter extends RecyclerView.Adapter<WXAdapter.ViewHolder> implements View.OnClickListener {
     private LayoutInflater mLayoutInflater;
     private List<WXItemInfo> mList;
+    private OnItemClickListener mOnItemClickListener;
 
     public WXAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -32,9 +33,14 @@ public class WXAdapter extends RecyclerView.Adapter<WXAdapter.ViewHolder> {
         mList = list;
     }
 
+    public List<WXItemInfo> getData(){
+        return mList;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mLayoutInflater.inflate(R.layout.wx_item, parent,false);
+        view.setOnClickListener(this);
         return new ViewHolder(view);
     }
 
@@ -43,12 +49,18 @@ public class WXAdapter extends RecyclerView.Adapter<WXAdapter.ViewHolder> {
         holder.wxItemTitle.setText(mList.get(position).getTitle());
         holder.wxItemContent.setText(mList.get(position).getContent());
         holder.wxItemTime.setText(mList.get(position).getTime());
+        holder.wxItemTitle.getRootView().setId(position);
 
     }
 
     @Override
     public int getItemCount() {
         return mList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        mOnItemClickListener.onItemClick(v);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
@@ -65,5 +77,13 @@ public class WXAdapter extends RecyclerView.Adapter<WXAdapter.ViewHolder> {
             super(view);
             ButterKnife.inject(this, view);
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mOnItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(View view);
     }
 }

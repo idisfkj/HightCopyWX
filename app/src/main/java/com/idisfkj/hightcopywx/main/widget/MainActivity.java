@@ -9,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.idisfkj.hightcopywx.R;
-import com.idisfkj.hightcopywx.main.FragmentAdapter;
+import com.idisfkj.hightcopywx.adapter.FragmentAdapter;
+import com.idisfkj.hightcopywx.main.presenter.MainPresenter;
 import com.idisfkj.hightcopywx.main.presenter.MainPresenterImp;
 import com.idisfkj.hightcopywx.main.view.MainView;
 import com.idisfkj.hightcopywx.ui.BaseActivity;
@@ -41,10 +42,11 @@ public class MainActivity extends BaseActivity implements MainView {
     TextView tabFindS;
     @InjectView(R.id.tab_me_s)
     TextView tabMeS;
-    private MainPresenterImp mMainPresenterImp;
+    private MainPresenter mMainPresenter;
     private List<ImageView> mListImage = new ArrayList<>();
     private List<TextView> mListText = new ArrayList<>();
     private int[] viewId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +54,20 @@ public class MainActivity extends BaseActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         init();
-        mMainPresenterImp = new MainPresenterImp(this);
+        //设置userAccount
+//        MiPushClient.setUserAccount(this,"idisfkj",null);
+//        MiPushClient.setAlias(this, "test", null);
+    }
+
+
+
+    public void init() {
+        mMainPresenter = new MainPresenterImp(this);
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         viewPage.setAdapter(adapter);
         weiXinS.setAlpha(1.0f);
         tabWeiXinS.setAlpha(1.0f);
         setViewPageListener();
-    }
-
-    public void init() {
         viewId = new int[]{R.id.ll_wx, R.id.ll_address, R.id.ll_find, R.id.ll_me};
         mListImage.add(weiXinS);
         mListImage.add(addressBookS);
@@ -147,6 +154,6 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @OnClick({R.id.ll_wx, R.id.ll_address, R.id.ll_find, R.id.ll_me})
     public void onClick(View view) {
-        mMainPresenterImp.switchNavigation(view.getId());
+        mMainPresenter.switchNavigation(view.getId());
     }
 }

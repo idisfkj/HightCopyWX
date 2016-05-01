@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.idisfkj.hightcopywx.R;
 import com.idisfkj.hightcopywx.main.widget.MainActivity;
+import com.idisfkj.hightcopywx.ui.widget.RegisterActivity;
+import com.idisfkj.hightcopywx.util.SPUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,7 +16,8 @@ import java.util.TimerTask;
  * Created by idisfkj on 16/4/18.
  * Email : idisfkj@qq.com.
  */
-public class WelcomeActivity extends Activity{
+public class WelcomeActivity extends Activity {
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +27,16 @@ public class WelcomeActivity extends Activity{
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                if (SPUtils.getString("userName", "") == "" &&
+                        SPUtils.getString("userPhone", "") == "") {
+                    intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
+                } else {
+                    intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                }
                 startActivity(intent);
                 finish();
             }
-        },3000);
+        }, 3000);
     }
 
     @Override

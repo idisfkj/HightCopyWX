@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="false">
+        <shape android:shape="line">
+            <solid android:color="@color/line_color"/>
+            <size android:height="0.5dp"/>
+        </shape>
+    </item>
+    <item android:state_focused="true">
+        <shape android:shape="line">
+            <solid android:color="@color/tab_color_s"/>
+            <size android:height="0.5dp" />
+        </shape>
+    </item>
+
+</selector>

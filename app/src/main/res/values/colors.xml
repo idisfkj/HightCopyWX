@@ -5,7 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="tab_color">#848282</color>
     <color name="tab_color_s">#0dd21d</color>
+    <color name="send_bt_color">#0cb319</color>
     <color name="line_color">#beb9b9</color>
     <color name="decoration_color">#d7cfcf</color>
     <color name="action_bar_color">#0d0c0c</color>
+    <color name="tiem_bg_color">#f4cac7c7</color>
 </resources>

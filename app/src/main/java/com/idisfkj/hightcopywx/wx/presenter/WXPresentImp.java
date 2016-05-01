@@ -1,7 +1,7 @@
 package com.idisfkj.hightcopywx.wx.presenter;
 
 import com.idisfkj.hightcopywx.beans.WXItemInfo;
-import com.idisfkj.hightcopywx.wx.model.WXModel;
+import com.idisfkj.hightcopywx.wx.model.WXModle;
 import com.idisfkj.hightcopywx.wx.model.WXModleImp;
 import com.idisfkj.hightcopywx.wx.view.WXView;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class WXPresentImp implements WXPresent{
 
-    private WXModel mWXModle;
+    private WXModle mWXModle;
     private WXView mWXView;
     private List<WXItemInfo> mList;
 

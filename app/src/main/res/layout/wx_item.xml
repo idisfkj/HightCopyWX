@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@drawable/wx_item_bg">
 
     <ImageView
         android:id="@+id/wx_item_picture"
@@ -26,8 +27,10 @@
             android:paddingTop="10dp">
 
             <TextView
+                android:layout_marginRight="5dp"
+                android:textSize="12sp"
                 android:id="@+id/wx_item_time"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="11:20"

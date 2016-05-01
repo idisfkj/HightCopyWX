@@ -9,6 +9,24 @@ public class WXItemInfo {
     private String title;
     private String content;
     private String time;
+    private String regId;
+    private String number;
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getRegId() {
+        return regId;
+    }
+
+    public void setRegId(String regId) {
+        this.regId = regId;
+    }
 
     public String getPictureUrl() {
         return pictureUrl;

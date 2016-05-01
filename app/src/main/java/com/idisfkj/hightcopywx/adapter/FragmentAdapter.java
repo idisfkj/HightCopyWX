@@ -1,8 +1,10 @@
-package com.idisfkj.hightcopywx.main;
+package com.idisfkj.hightcopywx.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.idisfkj.hightcopywx.main.FragmentFactory;
 
 /**
  * Created by idisfkj on 16/4/19.

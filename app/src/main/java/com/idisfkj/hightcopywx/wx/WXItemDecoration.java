@@ -17,7 +17,7 @@ public class WXItemDecoration extends RecyclerView.ItemDecoration {
 
     private Drawable drawable;
     public WXItemDecoration(Context context) {
-        drawable = context.getResources().getDrawable(R.drawable.wx_decoration_bg,null);
+        drawable = context.getResources().getDrawable(R.drawable.wx_decoration_bg);
     }
 
     @Override

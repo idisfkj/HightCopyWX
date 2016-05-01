@@ -1,4 +1,4 @@
-package com.idisfkj.hightcopywx.addressbook;
+package com.idisfkj.hightcopywx.contact;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,12 +13,18 @@ import com.idisfkj.hightcopywx.R;
  * Created by idisfkj on 16/4/19.
  * Email : idisfkj@qq.com.
  */
-public class AddressFragment extends Fragment{
+public class ContactFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.address_layout,null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.contact_layout, null);
         return view;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 }
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:focusableInTouchMode="true"
+        android:id="@+id/chat_bottm"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_margin="8dp"
+            android:background="@drawable/send_bt_bg"
+            android:id="@+id/chat_send"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/chat_send" />
+
+        <ImageView
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@id/chat_send"
+            android:background="@drawable/emoji"
+            android:id="@+id/chat_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/chat_line"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/line_color"
+            android:layout_toLeftOf="@id/chat_send"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"/>
+
+        <EditText
+            android:layout_above="@id/chat_line"
+            android:paddingLeft="10dp"
+            android:background="@null"
+            android:id="@+id/chat_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/chat_emoji" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_above="@id/chat_bottm"
+        android:id="@+id/chat_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/decoration_color">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

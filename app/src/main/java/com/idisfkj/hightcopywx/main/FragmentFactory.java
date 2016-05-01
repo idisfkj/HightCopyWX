@@ -2,7 +2,7 @@ package com.idisfkj.hightcopywx.main;
 
 import android.support.v4.app.Fragment;
 
-import com.idisfkj.hightcopywx.addressbook.AddressFragment;
+import com.idisfkj.hightcopywx.contact.ContactFragment;
 import com.idisfkj.hightcopywx.find.FindFragment;
 import com.idisfkj.hightcopywx.me.MeFragment;
 import com.idisfkj.hightcopywx.wx.widget.WXFragment;
@@ -28,7 +28,7 @@ public class FragmentFactory {
                 mFragment = new WXFragment();
                 break;
             case 1:
-                mFragment = new AddressFragment();
+                mFragment = new ContactFragment();
                 break;
             case 2:
                 mFragment = new FindFragment();

@@ -8,6 +8,6 @@ import java.util.List;
  * Created by idisfkj on 16/4/23.
  * Email : idisfkj@qq.com.
  */
-public interface WXModel {
+public interface WXModle {
     List<WXItemInfo> initData();
 }
