@@ -71,7 +71,9 @@ public class WXFragment extends Fragment implements WXView, WXAdapter.OnItemClic
         if (cursor.moveToFirst()) {
             bundle.putString("regId", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.REGID));
             bundle.putString("number", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.NUMBER));
-            bundle.putString("userName",CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TITLE));
+            bundle.putString("userName", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TITLE));
+//            ToastUtils.showShort("id:" + v.getId() + 1 + "regId:" + CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.REGID)
+//                    +SPUtils.getString("regId"));
         }
         intent.putExtras(bundle);
         startActivity(intent);

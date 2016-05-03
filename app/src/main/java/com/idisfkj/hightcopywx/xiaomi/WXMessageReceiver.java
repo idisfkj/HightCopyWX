@@ -55,6 +55,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
             mAlias = message.getAlias();
         }
         Intent intent = new Intent();
+        ChatMessageDataHelper chatHelper = new ChatMessageDataHelper(App.getAppContext());
         //user information
         if (mMessage.indexOf("^") != -1 && mMessage.indexOf("@") != -1) {
             int index1 = mMessage.lastIndexOf("^");
@@ -63,10 +64,8 @@ public class WXMessageReceiver extends PushMessageReceiver {
             String regId = mMessage.substring(index1 + 1, index2);
             String number = mMessage.substring(index2 + 1);
 
-            RegisterInfo info = new RegisterInfo();
-            info.setUserName(userName);
-            info.setNumber(number);
-            info.setRegId(regId);
+            RegisterInfo info = new RegisterInfo(userName,number,regId);
+
             RegisterDataHelper helper = new RegisterDataHelper(App.getAppContext());
             Cursor cursor = helper.query(number, regId);
             if (cursor != null && cursor.getCount() > 0) {
@@ -84,7 +83,8 @@ public class WXMessageReceiver extends PushMessageReceiver {
             }
             // insert user information
             helper.insert(info);
-            if (SPUtils.getString("regId").equals(App.DEVELOPER_ID)){
+
+            if (SPUtils.getString("regId").equals(App.DEVELOPER_ID)) {
                 WXDataHelper wxHelper = new WXDataHelper(App.getAppContext());
                 WXItemInfo itemInfo = new WXItemInfo();
                 itemInfo.setRegId(regId);
@@ -94,6 +94,11 @@ public class WXMessageReceiver extends PushMessageReceiver {
                 itemInfo.setCurrentAccount(SPUtils.getString("userPhone"));
                 itemInfo.setTime(CalendarUtils.getCurrentDate());
                 wxHelper.insert(itemInfo);
+
+                //insert system information
+                ChatMessageInfo chatInfo = new ChatMessageInfo(String.format(App.HELLO_MESSAGE, userName), 2, CalendarUtils.getCurrentDate()
+                        , SPUtils.getString("userPhone"), regId, number);
+                chatHelper.insert(chatInfo);
             }
 
         } else {
@@ -108,13 +113,8 @@ public class WXMessageReceiver extends PushMessageReceiver {
             String regId = extraMessage.substring(index2 + 1, index3);
             String sendNumber = extraMessage.substring(index3 + 1);
 
-            ChatMessageInfo chatMessageInfo = new ChatMessageInfo();
-            chatMessageInfo.setMessage(rMessage);
-            chatMessageInfo.setFlag(0);
-            chatMessageInfo.setTime(CalendarUtils.getCurrentDate());
-            chatMessageInfo.setReceiverNumber(receiverNumber);
-            chatMessageInfo.setRegId(regId);
-            chatMessageInfo.setSendNumber(sendNumber);
+            ChatMessageInfo chatMessageInfo = new ChatMessageInfo(rMessage, 0, CalendarUtils.getCurrentDate()
+                    , receiverNumber, regId, sendNumber);
 
             if (App.mNumber.equals(sendNumber) && App.mRegId.equals(regId)) {
                 //在当前聊天界面
@@ -125,8 +125,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
                 App.getAppContext().sendBroadcast(intent);
             } else {
                 //不在当前聊天界面
-                ChatMessageDataHelper helper = new ChatMessageDataHelper(App.getAppContext());
-                helper.insert(chatMessageInfo);
+                chatHelper.insert(chatMessageInfo);
             }
         }
     }

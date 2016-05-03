@@ -23,6 +23,18 @@ public class ChatMessageInfo implements Serializable {
      */
     private String sendNumber;
 
+    public ChatMessageInfo() {
+    }
+
+    public ChatMessageInfo(String message, int flag, String time, String receiverNumber, String regId, String sendNumber) {
+        this.message = message;
+        this.flag = flag;
+        this.time = time;
+        this.receiverNumber = receiverNumber;
+        this.regId = regId;
+        this.sendNumber = sendNumber;
+    }
+
     public String getReceiverNumber() {
         return receiverNumber;
     }

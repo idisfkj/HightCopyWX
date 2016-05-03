@@ -11,6 +11,15 @@ public class RegisterInfo {
 
     private String regId;
 
+    public RegisterInfo() {
+    }
+
+    public RegisterInfo(String userName, String number, String regId) {
+        this.userName = userName;
+        this.number = number;
+        this.regId = regId;
+    }
+
     public String getRegId() {
         return regId;
     }

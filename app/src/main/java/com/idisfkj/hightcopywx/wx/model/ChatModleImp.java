@@ -34,13 +34,8 @@ public class ChatModleImp implements ChatModle {
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                mChatMessageInfo = new ChatMessageInfo();
-                mChatMessageInfo.setMessage(chatContent);
-                mChatMessageInfo.setFlag(1);
-                mChatMessageInfo.setTime(CalendarUtils.getCurrentDate());
-                mChatMessageInfo.setReceiverNumber(number);
-                mChatMessageInfo.setRegId(regId);
-                mChatMessageInfo.setSendNumber(SPUtils.getString("userPhone", ""));
+                mChatMessageInfo = new ChatMessageInfo(chatContent, 1, CalendarUtils.getCurrentDate(),
+                        number, regId, SPUtils.getString("userPhone", ""));
                 listener.onSucceed(mChatMessageInfo, helper);
             }
         }, new Response.ErrorListener() {
@@ -68,23 +63,11 @@ public class ChatModleImp implements ChatModle {
 
     @Override
     public void initData(ChatMessageDataHelper helper, String mRegId, String mNumber, String userName) {
-        ChatMessageInfo info = new ChatMessageInfo();
         if (mRegId.equals(App.DEVELOPER_ID)) {
-            info.setMessage(App.DEVELOPER_MESSAGE);
-            info.setRegId(App.DEVELOPER_ID);
-            info.setSendNumber(App.DEVELOPER_NUMBER);
-            info.setFlag(0);
-            info.setTime(CalendarUtils.getCurrentDate());
-            info.setReceiverNumber(SPUtils.getString("userPhone"));
-        } else {
-            info.setMessage(String.format(App.HELLO_MESSAGE,userName));
-            info.setRegId(mRegId);
-            info.setSendNumber(mNumber);
-            info.setFlag(2);
-            info.setTime(CalendarUtils.getCurrentDate());
-            info.setReceiverNumber(SPUtils.getString("userPhone"));
+            ChatMessageInfo info = new ChatMessageInfo(App.DEVELOPER_MESSAGE, 0, CalendarUtils.getCurrentDate(),
+                    SPUtils.getString("userPhone"), App.DEVELOPER_ID, App.DEVELOPER_NUMBER);
+            helper.insert(info);
         }
-        helper.insert(info);
     }
 
     public interface requestListener {
