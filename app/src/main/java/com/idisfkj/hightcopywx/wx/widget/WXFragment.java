@@ -36,6 +36,7 @@ public class WXFragment extends Fragment implements WXView, WXAdapter.OnItemClic
     private WXAdapter wxAdapter;
     private WXPresent mWXPresent;
     private WXDataHelper mHelper;
+    private Cursor cursor;
 
     @Nullable
     @Override
@@ -67,13 +68,15 @@ public class WXFragment extends Fragment implements WXView, WXAdapter.OnItemClic
     public void onItemClick(View v) {
         Intent intent = new Intent(getActivity(), ChatActivity.class);
         Bundle bundle = new Bundle();
-        Cursor cursor = mHelper.query(v.getId()+1);
+        if (v.getId() >= 9)
+            cursor = mHelper.query(v.getId() +2);
+        else cursor = mHelper.query(v.getId()+1);
         if (cursor.moveToFirst()) {
             bundle.putString("regId", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.REGID));
             bundle.putString("number", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.NUMBER));
             bundle.putString("userName", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TITLE));
 //            ToastUtils.showShort("id:" + v.getId() + 1 + "regId:" + CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.REGID)
-//                    +SPUtils.getString("regId"));
+//                    + "sendRegId:" + SPUtils.getString("regId"));
         }
         intent.putExtras(bundle);
         startActivity(intent);

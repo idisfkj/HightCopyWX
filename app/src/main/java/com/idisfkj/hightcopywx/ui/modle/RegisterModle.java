@@ -8,5 +8,6 @@ import android.widget.EditText;
  */
 public interface RegisterModle {
     void saveData(RegisterModleImp.saveDataListener listener, EditText... editTexts);
-    void sendAll(RegisterModleImp.sendAllListener listener,String userName,String number);
+
+    void sendAll(RegisterModleImp.sendAllListener listener, String userName, String number);
 }

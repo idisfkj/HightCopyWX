@@ -11,13 +11,23 @@ public class RegisterInfo {
 
     private String regId;
 
-    public RegisterInfo() {
-    }
+    private String pictureUrl;
 
     public RegisterInfo(String userName, String number, String regId) {
         this.userName = userName;
         this.number = number;
         this.regId = regId;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public RegisterInfo() {
     }
 
     public String getRegId() {

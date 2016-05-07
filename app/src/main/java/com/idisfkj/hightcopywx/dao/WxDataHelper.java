@@ -62,7 +62,15 @@ public class WXDataHelper extends BaseDataHelper {
 
     public Cursor query(int id) {
         Cursor cursor = query(null, WXItemDataInfo._ID + "=?"
-                , new String[]{String.valueOf(id)}, WXItemDataInfo._ID+" ASC");
+                , new String[]{String.valueOf(id)}, WXItemDataInfo._ID + " ASC");
+        return cursor;
+    }
+
+    public Cursor query(String number, String regId, String userName) {
+        Cursor cursor = query(null, WXItemDataInfo.NUMBER + "=?" + " AND "
+                + WXItemDataInfo.REGID + "=?" + " AND "
+                + WXItemDataInfo.TITLE + "=?"
+                , new String[]{number, regId, userName}, WXItemDataInfo._ID + " ASC");
         return cursor;
     }
 
@@ -71,15 +79,16 @@ public class WXDataHelper extends BaseDataHelper {
         insert(values);
     }
 
-    public int update(WXItemInfo itemInfo, String regId, String number) {
-        ContentValues values = getContentValues(itemInfo);
+    public int update(String content, String regId, String number) {
+        ContentValues values = new ContentValues();
+        values.put(WXItemDataInfo.CONTENT, content);
         int row = update(values, WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
                 , new String[]{regId, number});
         return row;
     }
 
     public int delet(String regId, String number) {
-        int row = detet(WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
+        int row = delet(WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
                 , new String[]{regId, number});
         return row;
     }

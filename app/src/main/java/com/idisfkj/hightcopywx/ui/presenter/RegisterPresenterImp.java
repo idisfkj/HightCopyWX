@@ -1,5 +1,8 @@
 package com.idisfkj.hightcopywx.ui.presenter;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.EditText;
 
 import com.idisfkj.hightcopywx.App;
@@ -39,7 +42,28 @@ public class RegisterPresenterImp implements RegisterPresenter, RegisterModleImp
 
     @Override
     public void registerInfo(EditText... editTexts) {
+        mRegisterView.showProgressDialog();
         mRegisterModle.saveData(this,editTexts);
+    }
+
+    @Override
+    public void choosePicture() {
+        mRegisterView.showAlertDialog();
+    }
+
+    @Override
+    public void callCrop(Uri uri) {
+        mRegisterView.startCrop(uri);
+    }
+
+    @Override
+    public void getPicture(Intent intent) {
+        mRegisterView.setHeadPicture(intent);
+    }
+
+    @Override
+    public void savePicture(Bitmap bitmap) {
+        mRegisterView.saveHeadPicture(bitmap);
     }
 
     @Override
@@ -51,8 +75,16 @@ public class RegisterPresenterImp implements RegisterPresenter, RegisterModleImp
 
     @Override
     public void onSendSucceed() {
+        mRegisterView.hideProgressDialog();
+        mRegisterView.showSucceedToast();
         //全体标识
         MiPushClient.subscribe(App.getAppContext(),"register",null);
         mRegisterView.jumpMainActivity();
+    }
+
+    @Override
+    public void onError() {
+        mRegisterView.hideProgressDialog();
+        mRegisterView.showErrorToast();
     }
 }

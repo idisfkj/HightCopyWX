@@ -2,6 +2,7 @@ package com.idisfkj.hightcopywx.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -27,9 +28,9 @@ public class RegisterDataHelper extends BaseDataHelper {
 
     private ContentValues getContentValues(RegisterInfo info) {
         ContentValues values = new ContentValues();
-        values.put(RegisterDataInfo.USER_NAME,info.getUserName());
-        values.put(RegisterDataInfo.NUMBER,info.getNumber());
-        values.put(RegisterDataInfo.REGID,info.getRegId());
+        values.put(RegisterDataInfo.USER_NAME, info.getUserName());
+        values.put(RegisterDataInfo.NUMBER, info.getNumber());
+        values.put(RegisterDataInfo.REGID, info.getRegId());
         return values;
     }
 
@@ -37,6 +38,7 @@ public class RegisterDataHelper extends BaseDataHelper {
 
         public RegisterDataInfo() {
         }
+
         public static final String TABLE_NAME = "register";
         public static final String USER_NAME = "userName";
         public static final String REGID = "regId";
@@ -47,22 +49,31 @@ public class RegisterDataHelper extends BaseDataHelper {
                 .addColumn(REGID, Column.DataType.TEXT);
     }
 
-    public Cursor query(String number,String regId) {
-        Cursor cursor = query(null, RegisterDataInfo.NUMBER + "=?"+ " AND "+RegisterDataInfo.REGID+"=?"
-                , new String[]{number,regId}, null);
+    public Cursor query(String number, String regId) {
+        Cursor cursor = query(null, RegisterDataInfo.NUMBER + "=?" + " AND " + RegisterDataInfo.REGID + "=?"
+                , new String[]{number, regId}, null);
         return cursor;
     }
 
-    public void insert(RegisterInfo info){
+    public Cursor query(String number) {
+        Cursor cursor = query(null, RegisterDataInfo.NUMBER + "=?", new String[]{number}, null);
+        return cursor;
+    }
+
+    public void insert(RegisterInfo info) {
         ContentValues values = getContentValues(info);
         insert(values);
     }
 
-    public int update(RegisterInfo info,String number,String regId){
+    public int update(RegisterInfo info, String number, String regId) {
         ContentValues values = getContentValues(info);
-        int row = update(values,RegisterDataInfo.NUMBER+"=?"+" AND "+RegisterDataInfo.REGID
-                ,new String[]{number});
+        int row = update(values, RegisterDataInfo.NUMBER + "=?" + " AND " + RegisterDataInfo.REGID
+                , new String[]{number});
         return row;
+    }
+
+    public CursorLoader getCursorLoader(String number) {
+        return getCursorLoader(null, RegisterDataInfo.NUMBER + "=?", new String[]{number}, RegisterDataInfo._ID + " ASC");
     }
 
 }

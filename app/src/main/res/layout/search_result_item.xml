@@ -6,7 +6,6 @@
     android:background="@drawable/wx_item_bg">
 
     <ImageView
-        android:id="@+id/wx_item_picture"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
@@ -27,20 +26,9 @@
             android:paddingTop="10dp">
 
             <TextView
-                android:layout_marginRight="5dp"
-                android:textSize="12sp"
-                android:id="@+id/wx_item_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="11:20"
-                android:textColor="@color/tab_color" />
-
-            <TextView
-                android:id="@+id/wx_item_title"
+                android:id="@+id/search_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/wx_item_time"
                 android:gravity="center_vertical"
                 android:text="哈哈"
                 android:textSize="18sp" />
@@ -48,7 +36,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/wx_item_content"
+            android:id="@+id/search_item_number"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginRight="50dp"

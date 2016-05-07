@@ -43,7 +43,7 @@ public abstract class BaseDataHelper {
         return mContext.getContentResolver().bulkInsert(getContentUri(), values);
     }
 
-    protected final int detet(String where, String[] selectionArgs) {
+    protected final int delet(String where, String[] selectionArgs) {
         return mContext.getContentResolver().delete(getContentUri(), where, selectionArgs);
     }
 

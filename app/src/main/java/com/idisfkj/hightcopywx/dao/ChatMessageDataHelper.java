@@ -56,9 +56,9 @@ public class ChatMessageDataHelper extends BaseDataHelper {
     }
 
     public Cursor query(String receiverNumber, String regId) {
-        Cursor cursor = query(null, "("+ChatMessageDataInfo.RECEIVER_NUMBER + "=?" + " OR "
+        Cursor cursor = query(new String[]{ChatMessageDataInfo.MESSAGE}, "("+ChatMessageDataInfo.RECEIVER_NUMBER + "=?" + " OR "
                 + ChatMessageDataInfo.SEND_NUMBER + "=?" + ") AND "
-                + ChatMessageDataInfo.REGID + "=?", new String[]{receiverNumber, receiverNumber, regId}, null);
+                + ChatMessageDataInfo.REGID + "=?", new String[]{receiverNumber, receiverNumber, regId}, ChatMessageDataInfo._ID+" DESC");
         return cursor;
     }
 

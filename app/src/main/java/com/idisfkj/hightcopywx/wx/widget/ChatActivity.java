@@ -21,6 +21,8 @@ import android.widget.EditText;
 import com.idisfkj.hightcopywx.App;
 import com.idisfkj.hightcopywx.R;
 import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
+import com.idisfkj.hightcopywx.dao.WXDataHelper;
+import com.idisfkj.hightcopywx.util.CursorUtils;
 import com.idisfkj.hightcopywx.util.VolleyUtils;
 import com.idisfkj.hightcopywx.adapter.ChatAdapter;
 import com.idisfkj.hightcopywx.wx.presenter.ChatPresenter;
@@ -52,16 +54,20 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
     private InputMethodManager manager;
     private ChatMessageDataHelper chatHelper;
     private String userName;
+    private String lasterContent;
+    private WXDataHelper wxHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_layout);
         ButterKnife.inject(this);
-        App.mRegId = getIntent().getExtras().getString("regId");
-        App.mNumber = getIntent().getExtras().getString("number");
-        userName = getIntent().getExtras().getString("userName");
+        Bundle bundle = getIntent().getExtras();
+        App.mRegId = bundle.getString("regId");
+        App.mNumber = bundle.getString("number");
+        userName = bundle.getString("userName");
         init();
+
     }
 
     public void init() {
@@ -71,6 +77,7 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
         filter.addAction(ACTION_FILTER);
         this.registerReceiver(receiver, filter);
 
+        wxHelper = new WXDataHelper(this);
         mChatPresenter = new ChatPresenterImp(this);
         chatHelper = new ChatMessageDataHelper(this);
         mChatAdapter = new ChatAdapter(this);
@@ -113,7 +120,7 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (loader != null && data.getCount() <= 0) {
-            mChatPresenter.initData(chatHelper, App.mRegId, App.mNumber,userName);
+            mChatPresenter.initData(chatHelper, App.mRegId, App.mNumber, userName);
         }
         mChatAdapter.changeCursor(data);
         mChatAdapter.setCursor(data);
@@ -129,6 +136,7 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            lasterContent = intent.getExtras().getString("message");
             mChatPresenter.receiveData(intent, chatHelper);
         }
     }
@@ -136,6 +144,7 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
     @OnClick(R.id.chat_send)
     public void onClick() {
         mChatContent = chatContent.getText().toString();
+        lasterContent = mChatContent;
         if (mChatContent.trim().length() > 0) {
             mChatPresenter.sendData(mChatContent, App.mNumber, App.mRegId, chatHelper);
         }
@@ -145,6 +154,14 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //更新数据
+        Cursor cursor = chatHelper.query(App.mNumber, App.mRegId);
+        if (cursor.moveToFirst()){
+            lasterContent = CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE);
+        }
+        cursor.close();
+        wxHelper.update(lasterContent,App.mRegId,App.mNumber);
+        //重置数据
         App.mNumber = "-1";
         App.mRegId = "-1";
         VolleyUtils.cancelAll("chatRequest");

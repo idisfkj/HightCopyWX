@@ -2,6 +2,8 @@ package com.idisfkj.hightcopywx.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,10 @@ import android.widget.TextView;
 
 import com.idisfkj.hightcopywx.R;
 import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
+import com.idisfkj.hightcopywx.ui.widget.RegisterActivity;
 import com.idisfkj.hightcopywx.util.CursorUtils;
+
+import java.io.File;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,11 +33,16 @@ public class ChatAdapter extends RecyclerViewCursorBaseAdapter<RecyclerView.View
     private static final int SEND_MESSAGE = 1;
     private static final int SYSTEM_MESSAGE = 2;
     private Cursor mCursor;
+    private Bitmap sendBitmap;
 
     public ChatAdapter(Context context) {
         super(context, null);
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
+        File path = new File(RegisterActivity.SAVE_PATH + RegisterActivity.PICTURE_NAME);
+        if (path.exists()) {
+            sendBitmap = BitmapFactory.decodeFile(RegisterActivity.SAVE_PATH + RegisterActivity.PICTURE_NAME);
+        }
     }
 
     public void setCursor(Cursor cursor) {
@@ -57,15 +67,16 @@ public class ChatAdapter extends RecyclerViewCursorBaseAdapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder holder, Cursor cursor) {
         if (holder instanceof ChatReceiveViewHolder) {
             ((ChatReceiveViewHolder) holder).chatReceiveTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
-//            ((ChatReceiveViewHolder)holder).chatReceivePicture.setImageDrawable();
+//            ((ChatReceiveViewHolder) holder).chatReceivePicture.setImageBitmap();
             ((ChatReceiveViewHolder) holder).chatReceiveContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
         } else if (holder instanceof ChatSendViewHolder) {
             ((ChatSendViewHolder) holder).chatSendTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
-//            ((ChatSendViewHolder)holder).chatSendPicture.setImageDrawable();
+            if (sendBitmap != null)
+                ((ChatSendViewHolder) holder).chatSendPicture.setImageBitmap(sendBitmap);
             ((ChatSendViewHolder) holder).chatSendContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
         } else {
-            ((ChatSystemViewHolder)holder).chatSystemTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
-            ((ChatSystemViewHolder)holder).chatSystemContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
+            ((ChatSystemViewHolder) holder).chatSystemTime.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME));
+            ((ChatSystemViewHolder) holder).chatSystemContent.setText(CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE));
         }
     }
 

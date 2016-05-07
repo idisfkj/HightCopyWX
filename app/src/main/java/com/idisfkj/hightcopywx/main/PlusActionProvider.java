@@ -1,6 +1,7 @@
 package com.idisfkj.hightcopywx.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.ActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -8,6 +9,7 @@ import android.view.SubMenu;
 import android.view.View;
 
 import com.idisfkj.hightcopywx.R;
+import com.idisfkj.hightcopywx.main.widget.AddFriendsActivity;
 import com.idisfkj.hightcopywx.util.ToastUtils;
 
 /**
@@ -59,7 +61,8 @@ public class PlusActionProvider extends ActionProvider implements MenuItem.OnMen
                 ToastUtils.showShort("打开群聊");
                 break;
             case 1:
-                ToastUtils.showShort("打开添加好友");
+                Intent intent = new Intent(mContext, AddFriendsActivity.class);
+                mContext.startActivity(intent);
                 break;
             case 2:
                 ToastUtils.showShort("打开扫一扫");

@@ -44,7 +44,7 @@ public class RegisterModleImp implements RegisterModle {
 
     @Override
     public void sendAll(final sendAllListener listener, String userName, String number) {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, UrlUtils.RegisterUrl(userName, number)
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, UrlUtils.registerUrl(userName, number)
                 , null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
@@ -53,7 +53,7 @@ public class RegisterModleImp implements RegisterModle {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                ToastUtils.showShort("sendError");
+                listener.onError();
             }
         }) {
             @Override
@@ -72,5 +72,7 @@ public class RegisterModleImp implements RegisterModle {
 
     public interface sendAllListener {
         void onSendSucceed();
+
+        void onError();
     }
 }

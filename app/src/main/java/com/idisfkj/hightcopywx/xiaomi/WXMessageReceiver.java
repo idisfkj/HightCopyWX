@@ -39,6 +39,8 @@ public class WXMessageReceiver extends PushMessageReceiver {
     private String mAlias;
     private String mStartTime;
     private String mEndTime;
+    private ChatMessageDataHelper chatHelper;
+    private Intent intent;
 
     /**
      * 接收服务器发送的透传消息
@@ -54,79 +56,17 @@ public class WXMessageReceiver extends PushMessageReceiver {
         } else if (!TextUtils.isEmpty(message.getAlias())) {
             mAlias = message.getAlias();
         }
-        Intent intent = new Intent();
-        ChatMessageDataHelper chatHelper = new ChatMessageDataHelper(App.getAppContext());
-        //user information
+        Log.d("TAG", "message:" + mMessage);
+        intent = new Intent();
+        chatHelper = new ChatMessageDataHelper(App.getAppContext());
+
         if (mMessage.indexOf("^") != -1 && mMessage.indexOf("@") != -1) {
-            int index1 = mMessage.lastIndexOf("^");
-            int index2 = mMessage.lastIndexOf("@");
-            String userName = mMessage.substring(0, index1);
-            String regId = mMessage.substring(index1 + 1, index2);
-            String number = mMessage.substring(index2 + 1);
-
-            RegisterInfo info = new RegisterInfo(userName,number,regId);
-
-            RegisterDataHelper helper = new RegisterDataHelper(App.getAppContext());
-            Cursor cursor = helper.query(number, regId);
-            if (cursor != null && cursor.getCount() > 0) {
-                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                    if (CursorUtils.formatString(cursor, RegisterDataHelper.RegisterDataInfo.REGID).equals(regId)
-                            && CursorUtils.formatString(cursor, RegisterDataHelper.RegisterDataInfo.NUMBER).equals(number)) {
-                        if (!CursorUtils.formatString(cursor, RegisterDataHelper.RegisterDataInfo.USER_NAME).equals(userName))
-                            // update user information
-                            helper.update(info, number, regId);
-                        cursor.close();
-                        return;
-                    }
-                }
-                cursor.close();
-            }
-            // insert user information
-            helper.insert(info);
-
-            if (SPUtils.getString("regId").equals(App.DEVELOPER_ID)) {
-                WXDataHelper wxHelper = new WXDataHelper(App.getAppContext());
-                WXItemInfo itemInfo = new WXItemInfo();
-                itemInfo.setRegId(regId);
-                itemInfo.setTitle(userName);
-                itemInfo.setNumber(number);
-                itemInfo.setContent(String.format(App.HELLO_MESSAGE, userName));
-                itemInfo.setCurrentAccount(SPUtils.getString("userPhone"));
-                itemInfo.setTime(CalendarUtils.getCurrentDate());
-                wxHelper.insert(itemInfo);
-
-                //insert system information
-                ChatMessageInfo chatInfo = new ChatMessageInfo(String.format(App.HELLO_MESSAGE, userName), 2, CalendarUtils.getCurrentDate()
-                        , SPUtils.getString("userPhone"), regId, number);
-                chatHelper.insert(chatInfo);
-            }
-
+            //user information
+            userInformation(mMessage);
+        } else if (mMessage.indexOf("&") != -1 && mMessage.indexOf("@") != -1) {
+            addFriendInformation(mMessage);
         } else {
-            // chat information
-            int index1 = mMessage.lastIndexOf("(");
-            String rMessage = mMessage.substring(0, index1);
-            String extraMessage = mMessage.substring(index1 + 1);
-
-            int index2 = extraMessage.indexOf("@");
-            int index3 = extraMessage.indexOf("@", index2 + 1);
-            String receiverNumber = extraMessage.substring(0, index2);
-            String regId = extraMessage.substring(index2 + 1, index3);
-            String sendNumber = extraMessage.substring(index3 + 1);
-
-            ChatMessageInfo chatMessageInfo = new ChatMessageInfo(rMessage, 0, CalendarUtils.getCurrentDate()
-                    , receiverNumber, regId, sendNumber);
-
-            if (App.mNumber.equals(sendNumber) && App.mRegId.equals(regId)) {
-                //在当前聊天界面
-                intent.setAction("com.idisfkj.hightcopywx.chat");
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("chatMessageInfo", chatMessageInfo);
-                intent.putExtras(bundle);
-                App.getAppContext().sendBroadcast(intent);
-            } else {
-                //不在当前聊天界面
-                chatHelper.insert(chatMessageInfo);
-            }
+            chatInformation(mMessage);
         }
     }
 
@@ -223,6 +163,107 @@ public class WXMessageReceiver extends PushMessageReceiver {
                 mRegId = cmdArg1;
             }
         }
+        Log.d("TAG", "register:" + mRegId);
         SPUtils.putString("regId", mRegId).commit();
+    }
+
+    public void userInformation(String message) {
+        int index1 = message.lastIndexOf("^");
+        int index2 = message.lastIndexOf("@");
+
+        String userName = message.substring(0, index1);
+        String regId = message.substring(index1 + 1, index2);
+        String number = message.substring(index2 + 1);
+
+        RegisterInfo info = new RegisterInfo(userName, number, regId);
+
+        RegisterDataHelper helper = new RegisterDataHelper(App.getAppContext());
+        Cursor cursor = helper.query(number, regId);
+        if (cursor != null && cursor.getCount() > 0) {
+            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                if (CursorUtils.formatString(cursor, RegisterDataHelper.RegisterDataInfo.REGID).equals(regId)
+                        && CursorUtils.formatString(cursor, RegisterDataHelper.RegisterDataInfo.NUMBER).equals(number)) {
+                    if (!CursorUtils.formatString(cursor, RegisterDataHelper.RegisterDataInfo.USER_NAME).equals(userName))
+                        // update user information
+                        helper.update(info, number, regId);
+                    cursor.close();
+                    return;
+                }
+            }
+            cursor.close();
+        }
+
+        // insert user information
+        helper.insert(info);
+
+        if (SPUtils.getString("regId").equals(App.DEVELOPER_ID)) {
+            WXDataHelper wxHelper = new WXDataHelper(App.getAppContext());
+            WXItemInfo itemInfo = new WXItemInfo();
+            itemInfo.setRegId(regId);
+            itemInfo.setTitle(userName);
+            itemInfo.setNumber(number);
+            itemInfo.setContent(String.format(App.HELLO_MESSAGE, userName));
+            itemInfo.setCurrentAccount(SPUtils.getString("userPhone"));
+            itemInfo.setTime(CalendarUtils.getCurrentDate());
+            wxHelper.insert(itemInfo);
+
+            //insert system information
+            ChatMessageInfo chatInfo = new ChatMessageInfo(String.format(App.HELLO_MESSAGE, userName), 2, CalendarUtils.getCurrentDate()
+                    , SPUtils.getString("userPhone"), regId, number);
+            chatHelper.insert(chatInfo);
+        }
+    }
+
+    public void chatInformation(String message) {
+        // chat information
+        int index1 = message.lastIndexOf("(");
+        String rMessage = message.substring(0, index1);
+        String extraMessage = message.substring(index1 + 1);
+
+        int index2 = extraMessage.indexOf("@");
+        int index3 = extraMessage.indexOf("@", index2 + 1);
+        String receiverNumber = extraMessage.substring(0, index2);
+        String regId = extraMessage.substring(index2 + 1, index3);
+        String sendNumber = extraMessage.substring(index3 + 1);
+
+        ChatMessageInfo chatMessageInfo = new ChatMessageInfo(rMessage, 0, CalendarUtils.getCurrentDate()
+                , receiverNumber, regId, sendNumber);
+
+        if (App.mNumber.equals(sendNumber) && App.mRegId.equals(regId)) {
+            //在当前聊天界面
+            intent.setAction("com.idisfkj.hightcopywx.chat");
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("chatMessageInfo", chatMessageInfo);
+            bundle.putString("message", rMessage);
+            intent.putExtras(bundle);
+            App.getAppContext().sendBroadcast(intent);
+        } else {
+            //不在当前聊天界面
+            chatHelper.insert(chatMessageInfo);
+        }
+    }
+
+    public void addFriendInformation(String message) {
+        int index1 = message.indexOf("&");
+        int index2 = message.indexOf("@");
+        String userName = message.substring(0, index1);
+        String number= message.substring(index1 + 1, index2);
+        String regId = message.substring(index2+1);
+        String currentAccount = SPUtils.getString("userPhone");
+        WXItemInfo itemInfo = new WXItemInfo();
+        itemInfo.setTitle(userName);
+        itemInfo.setNumber(number);
+        itemInfo.setRegId(regId);
+        itemInfo.setContent(String.format(App.HELLO_MESSAGE, number));
+        itemInfo.setCurrentAccount(currentAccount);
+        itemInfo.setTime(CalendarUtils.getCurrentDate());
+        WXDataHelper wxHelper = new WXDataHelper(App.getAppContext());
+        //默认添加朋友请求
+        wxHelper.insert(itemInfo);
+
+        //插入系统消息
+        ChatMessageInfo chatInfo = new ChatMessageInfo(String.format(App.HELLO_MESSAGE,userName),2,
+                CalendarUtils.getCurrentDate(),currentAccount,regId,number);
+        chatHelper.insert(chatInfo);
     }
 }
