@@ -1,6 +1,5 @@
 package com.idisfkj.hightcopywx.wx.widget;
 
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,11 +19,12 @@ import android.widget.EditText;
 
 import com.idisfkj.hightcopywx.App;
 import com.idisfkj.hightcopywx.R;
+import com.idisfkj.hightcopywx.adapter.ChatAdapter;
 import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
 import com.idisfkj.hightcopywx.dao.WXDataHelper;
+import com.idisfkj.hightcopywx.ui.BaseActivity;
 import com.idisfkj.hightcopywx.util.CursorUtils;
 import com.idisfkj.hightcopywx.util.VolleyUtils;
-import com.idisfkj.hightcopywx.adapter.ChatAdapter;
 import com.idisfkj.hightcopywx.wx.presenter.ChatPresenter;
 import com.idisfkj.hightcopywx.wx.presenter.ChatPresenterImp;
 import com.idisfkj.hightcopywx.wx.view.ChatView;
@@ -38,7 +38,7 @@ import butterknife.OnClick;
  * Created by idisfkj on 16/4/25.
  * Email : idisfkj@qq.com.
  */
-public class ChatActivity extends Activity implements ChatView, View.OnTouchListener, View.OnFocusChangeListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class ChatActivity extends BaseActivity implements ChatView, View.OnTouchListener, View.OnFocusChangeListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     @InjectView(R.id.chat_content)
     EditText chatContent;
@@ -66,6 +66,7 @@ public class ChatActivity extends Activity implements ChatView, View.OnTouchList
         App.mRegId = bundle.getString("regId");
         App.mNumber = bundle.getString("number");
         userName = bundle.getString("userName");
+        getActionBar().setTitle(userName);
         init();
 
     }

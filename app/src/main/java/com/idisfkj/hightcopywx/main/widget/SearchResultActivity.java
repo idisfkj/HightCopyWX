@@ -1,6 +1,5 @@
 package com.idisfkj.hightcopywx.main.widget;
 
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
 import android.content.Loader;
@@ -16,6 +15,7 @@ import com.idisfkj.hightcopywx.dao.RegisterDataHelper;
 import com.idisfkj.hightcopywx.main.presenter.SearchResultPresenter;
 import com.idisfkj.hightcopywx.main.presenter.SearchResultPresenterImp;
 import com.idisfkj.hightcopywx.main.view.SearchResultView;
+import com.idisfkj.hightcopywx.ui.BaseActivity;
 import com.idisfkj.hightcopywx.util.ToastUtils;
 import com.idisfkj.hightcopywx.wx.WXItemDecoration;
 
@@ -26,7 +26,7 @@ import butterknife.InjectView;
  * Created by idisfkj on 16/5/7.
  * Email : idisfkj@qq.com.
  */
-public class SearchResultActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>, SearchResultAdapter.SearchItemClickListener, SearchResultView{
+public class SearchResultActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor>, SearchResultAdapter.SearchItemClickListener, SearchResultView{
 
     @InjectView(R.id.search_result)
     RecyclerView searchResult;
@@ -41,6 +41,7 @@ public class SearchResultActivity extends Activity implements LoaderManager.Load
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_result);
         ButterKnife.inject(this);
+        getActionBar().setTitle(R.string.add_friends);
         mPresenter = new SearchResultPresenterImp(this);
         mSearchResult = getIntent().getStringExtra("searchResult");
         mRegisterHelper = new RegisterDataHelper(this);
@@ -75,12 +76,21 @@ public class SearchResultActivity extends Activity implements LoaderManager.Load
 
     @Override
     public void succeedToFinish() {
-        ToastUtils.showShort("添加成功！");
         finish();
     }
 
     @Override
     public void hideProgressDialog(ProgressDialog pd) {
         pd.cancel();
+    }
+
+    @Override
+    public void showSucceedToast() {
+        ToastUtils.showShort("添加成功！");
+    }
+
+    @Override
+    public void showErrorToast() {
+        ToastUtils.showShort("网络异常,请检查网络");
     }
 }

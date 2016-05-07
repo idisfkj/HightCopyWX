@@ -14,7 +14,7 @@
     <string name="chat_send">发送</string>
     <string name="network_error">网络连接失败,请检查网络</string>
     <string name="userName">昵称</string>
-    <string name="userName_hint">例如：康康</string>
+    <string name="userName_hint">例如：张三</string>
     <string name="userPhone_pre">+86</string>
     <string name="userPhone_hint">你的手机号码</string>
     <string name="userPassword">密码</string>

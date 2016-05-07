@@ -9,6 +9,14 @@ import java.net.URLEncoder;
  */
 public class UrlUtils {
     private static final String PACKAGE_NAME = "com.idisfkj.hightcopywx";
+    private static final String REGID_API = "https://api.xmpush.xiaomi.com/v2/message/regid";
+    private static final String ALL_API = "https://api.xmpush.xiaomi.com/v2/message/all";
+    private static final String PAYLOAD = "?payload=";
+    private static final String RESTRICTED_PACKAGE_NAME = "&restricted_package_name=";
+    private static final String REGISTRATION_ID = "&registration_id=";
+    private static final String NOTIFY_TYPE = "&notify_type=2";
+    private static final String PASS_THROUGH = "&pass_through=1";
+    private static final String NOTIFY_ID = "&notify_id=0";
 
     public UrlUtils() {
     }
@@ -21,14 +29,13 @@ public class UrlUtils {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String url = "https://api.xmpush.xiaomi.com/v2/message/regid" +
-                "?payload=" + content +
-                "&restricted_package_name=" + PACKAGE_NAME +
-                "&registration_id=" + regId +
-                "&notify_type=2" +
-                "&pass_through=1" +
-//                "&time_to_live=1000" +
-                "&notify_id=0";
+        String url = REGID_API +
+                PAYLOAD + content +
+                RESTRICTED_PACKAGE_NAME + PACKAGE_NAME +
+                REGISTRATION_ID + regId +
+                NOTIFY_TYPE +
+                PASS_THROUGH +
+                NOTIFY_ID;
         return url;
     }
 
@@ -40,14 +47,13 @@ public class UrlUtils {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String url = "https://api.xmpush.xiaomi.com/v2/message/regid" +
-                "?payload=" + content +
-                "&restricted_package_name=" + PACKAGE_NAME +
-                "&registration_id=" + regId +
-                "&notify_type=2" +
-                "&pass_through=1" +
-//                "&time_to_live=1000" +
-                "&notify_id=0";
+        String url = REGID_API +
+                PAYLOAD + content +
+                RESTRICTED_PACKAGE_NAME + PACKAGE_NAME +
+                REGISTRATION_ID + regId +
+                NOTIFY_TYPE +
+                PASS_THROUGH +
+                NOTIFY_ID;
         return url;
     }
 
@@ -58,12 +64,11 @@ public class UrlUtils {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String url = "https://api.xmpush.xiaomi.com/v2/message/topic" +
-                "?payload=" + content +
-                "&restricted_package_name=" + PACKAGE_NAME +
-                "&topic=register" +
-                "&notify_type=2" +
-                "&pass_through=1";
+        String url = ALL_API +
+                PAYLOAD + content +
+                RESTRICTED_PACKAGE_NAME + PACKAGE_NAME +
+                NOTIFY_TYPE +
+                PASS_THROUGH;
         return url;
     }
 }

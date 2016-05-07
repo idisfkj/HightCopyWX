@@ -42,6 +42,7 @@ public class AddFriendsActivity extends BaseActivity implements TextWatcher, Add
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_friends);
         ButterKnife.inject(this);
+        getActionBar().setTitle(R.string.add_friends);
         init();
     }
 

@@ -16,7 +16,6 @@ import com.idisfkj.hightcopywx.main.modle.SearchResultModleImp;
 import com.idisfkj.hightcopywx.main.view.SearchResultView;
 import com.idisfkj.hightcopywx.util.CalendarUtils;
 import com.idisfkj.hightcopywx.util.SPUtils;
-import com.idisfkj.hightcopywx.util.ToastUtils;
 import com.idisfkj.hightcopywx.util.VolleyUtils;
 
 /**
@@ -63,11 +62,12 @@ public class SearchResultPresenterImp implements SearchResultPresenter, SearchRe
         VolleyUtils.cancelAll("addRequest");
         mView.succeedToFinish();
         mView.hideProgressDialog(pd);
+        mView.showSucceedToast();
     }
 
     @Override
     public void onError(ProgressDialog pd) {
         pd.cancel();
-        ToastUtils.showShort("网络异常,请检查网络");
+        mView.showErrorToast();
     }
 }

@@ -18,6 +18,7 @@ import com.idisfkj.hightcopywx.adapter.SearchResultAdapter;
 import com.idisfkj.hightcopywx.dao.RegisterDataHelper;
 import com.idisfkj.hightcopywx.dao.WXDataHelper;
 import com.idisfkj.hightcopywx.util.CursorUtils;
+import com.idisfkj.hightcopywx.util.SPUtils;
 import com.idisfkj.hightcopywx.util.ToastUtils;
 import com.idisfkj.hightcopywx.util.UrlUtils;
 import com.idisfkj.hightcopywx.util.VolleyUtils;
@@ -53,11 +54,12 @@ public class SearchResultModleImp implements SearchResultModle {
 
                             WXDataHelper wxHelper = new WXDataHelper(context);
                             Cursor wxCursor = wxHelper.query(number, regId, userName);
-                            if (wxCursor.getCount() > 0) {
+                            if (wxCursor.getCount() > 0 || (number.equals(SPUtils.getString("userPhone"))
+                                    && regId.equals(SPUtils.getString("regId")))) {
                                 ToastUtils.showShort("你已经添加了该好友！");
                             } else {
                                 //发送添加好友请求
-                                pd = ProgressDialog.show(context,"添加请求中...","请稍后...",true);
+                                pd = ProgressDialog.show(context, "添加请求中...", "请稍后...", true);
                                 request(userName, number, regId, listener, cursor);
                             }
                             wxCursor.close();
@@ -77,7 +79,7 @@ public class SearchResultModleImp implements SearchResultModle {
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
-                listener.onSucceed(userName, number, regId, cursor,pd);
+                listener.onSucceed(userName, number, regId, cursor, pd);
             }
         }, new Response.ErrorListener() {
             @Override

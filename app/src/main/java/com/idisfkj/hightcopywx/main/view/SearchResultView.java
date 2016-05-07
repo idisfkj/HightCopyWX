@@ -10,4 +10,8 @@ public interface SearchResultView {
     void succeedToFinish();
 
     void hideProgressDialog(ProgressDialog pd);
+
+    void showSucceedToast();
+
+    void showErrorToast();
 }
