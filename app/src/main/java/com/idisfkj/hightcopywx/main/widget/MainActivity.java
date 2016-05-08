@@ -54,9 +54,6 @@ public class MainActivity extends BaseActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         init();
-        //设置userAccount
-//        MiPushClient.setUserAccount(this,"idisfkj",null);
-//        MiPushClient.setAlias(this, "test", null);
     }
 
 

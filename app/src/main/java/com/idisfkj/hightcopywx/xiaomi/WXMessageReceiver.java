@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.idisfkj.hightcopywx.App;
 import com.idisfkj.hightcopywx.beans.ChatMessageInfo;
@@ -26,6 +25,7 @@ import com.xiaomi.mipush.sdk.PushMessageReceiver;
 import java.util.List;
 
 /**
+ * 小米推送信息接受
  * Created by idisfkj on 16/4/23.
  * Email : idisfkj@qq.com.
  */
@@ -56,7 +56,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
         } else if (!TextUtils.isEmpty(message.getAlias())) {
             mAlias = message.getAlias();
         }
-        Log.d("TAG", "message:" + mMessage);
+//        Log.d("TAG", "message:" + mMessage);
         intent = new Intent();
         chatHelper = new ChatMessageDataHelper(App.getAppContext());
 
@@ -102,8 +102,8 @@ public class WXMessageReceiver extends PushMessageReceiver {
         } else if (!TextUtils.isEmpty(message.getAlias())) {
             mAlias = message.getAlias();
         }
-        Log.d("TAG", "message通知:" + mMessage);
-        Log.d("TAG", "Alias通知:" + mAlias);
+//        Log.d("TAG", "message通知:" + mMessage);
+//        Log.d("TAG", "Alias通知:" + mAlias);
     }
 
     /**
@@ -163,7 +163,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
                 mRegId = cmdArg1;
             }
         }
-        Log.d("TAG", "register:" + mRegId);
+//        Log.d("TAG", "register:" + mRegId);
         SPUtils.putString("regId", mRegId).commit();
     }
 

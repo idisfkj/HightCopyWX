@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
+ * 请求api工具类
  * Created by idisfkj on 16/4/26.
  * Email : idisfkj@qq.com.
  */
@@ -21,6 +22,13 @@ public class UrlUtils {
     public UrlUtils() {
     }
 
+    /**
+     * 聊天URl
+     * @param message
+     * @param number
+     * @param regId
+     * @return
+     */
     public static String chatUrl(String message, String number, String regId) {
         String content = null;
         try {
@@ -39,6 +47,11 @@ public class UrlUtils {
         return url;
     }
 
+    /**
+     * 添加朋友Url
+     * @param regId
+     * @return
+     */
     public static String addFriendUrl(String regId) {
         String content = null;
         try {
@@ -57,6 +70,12 @@ public class UrlUtils {
         return url;
     }
 
+    /**
+     * 注册URl
+     * @param userName
+     * @param number
+     * @return
+     */
     public static String registerUrl(String userName, String number) {
         String content = userName + "^" + SPUtils.getString("regId", "") + "@" + number;
         try {

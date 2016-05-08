@@ -5,24 +5,22 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.widget.EditText;
 
-import com.idisfkj.hightcopywx.App;
 import com.idisfkj.hightcopywx.R;
-import com.idisfkj.hightcopywx.ui.modle.RegisterModle;
-import com.idisfkj.hightcopywx.ui.modle.RegisterModleImp;
+import com.idisfkj.hightcopywx.ui.model.RegisterModel;
+import com.idisfkj.hightcopywx.ui.model.RegisterModelImp;
 import com.idisfkj.hightcopywx.ui.view.RegisterView;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 /**
  * Created by idisfkj on 16/4/28.
  * Email : idisfkj@qq.com.
  */
-public class RegisterPresenterImp implements RegisterPresenter, RegisterModleImp.saveDataListener, RegisterModleImp.sendAllListener {
+public class RegisterPresenterImp implements RegisterPresenter, RegisterModelImp.saveDataListener, RegisterModelImp.sendAllListener {
     private RegisterView mRegisterView;
-    private RegisterModle mRegisterModle;
+    private RegisterModel mRegisterModel;
 
     public RegisterPresenterImp(RegisterView mRegisterView) {
         this.mRegisterView = mRegisterView;
-        mRegisterModle = new RegisterModleImp();
+        mRegisterModel = new RegisterModelImp();
     }
 
     @Override
@@ -43,7 +41,7 @@ public class RegisterPresenterImp implements RegisterPresenter, RegisterModleImp
     @Override
     public void registerInfo(EditText... editTexts) {
         mRegisterView.showProgressDialog();
-        mRegisterModle.saveData(this,editTexts);
+        mRegisterModel.saveData(this,editTexts);
     }
 
     @Override
@@ -68,17 +66,13 @@ public class RegisterPresenterImp implements RegisterPresenter, RegisterModleImp
 
     @Override
     public void onSucceed(String userName,String number) {
-        //个人标识
-        MiPushClient.setUserAccount(App.getAppContext(),number,null);
-        mRegisterModle.sendAll(this,userName,number);
+        mRegisterModel.sendAll(this,userName,number);
     }
 
     @Override
     public void onSendSucceed() {
         mRegisterView.hideProgressDialog();
         mRegisterView.showSucceedToast();
-        //全体标识
-        MiPushClient.subscribe(App.getAppContext(),"register",null);
         mRegisterView.jumpMainActivity();
     }
 

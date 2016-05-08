@@ -5,6 +5,7 @@ import android.widget.Toast;
 import com.idisfkj.hightcopywx.App;
 
 /**
+ * Toast工具类
  * Created by idisfkj on 16/4/21.
  * Email : idisfkj@qq.com.
  */

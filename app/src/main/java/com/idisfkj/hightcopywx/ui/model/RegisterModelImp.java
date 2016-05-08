@@ -1,4 +1,4 @@
-package com.idisfkj.hightcopywx.ui.modle;
+package com.idisfkj.hightcopywx.ui.model;
 
 import android.widget.EditText;
 
@@ -22,7 +22,7 @@ import java.util.Map;
  * Created by idisfkj on 16/4/28.
  * Email : idisfkj@qq.com.
  */
-public class RegisterModleImp implements RegisterModle {
+public class RegisterModelImp implements RegisterModel {
     private String[] user;
 
     @Override

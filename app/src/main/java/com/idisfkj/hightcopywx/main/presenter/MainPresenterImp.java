@@ -1,8 +1,8 @@
 package com.idisfkj.hightcopywx.main.presenter;
 
 import com.idisfkj.hightcopywx.R;
-import com.idisfkj.hightcopywx.main.modle.MainModle;
-import com.idisfkj.hightcopywx.main.modle.MainModleImp;
+import com.idisfkj.hightcopywx.main.model.MainModel;
+import com.idisfkj.hightcopywx.main.model.MainModelImp;
 import com.idisfkj.hightcopywx.main.view.MainView;
 
 /**
@@ -12,11 +12,11 @@ import com.idisfkj.hightcopywx.main.view.MainView;
 public class MainPresenterImp implements MainPresenter {
 
     private MainView mMianViw;
-    private MainModle mMainModle;
+    private MainModel mMainModel;
 
     public MainPresenterImp(MainView mainView) {
         mMianViw = mainView;
-        mMainModle = new MainModleImp();
+        mMainModel = new MainModelImp();
     }
 
     @Override

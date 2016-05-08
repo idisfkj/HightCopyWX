@@ -6,6 +6,7 @@ import com.android.volley.toolbox.Volley;
 import com.idisfkj.hightcopywx.App;
 
 /**
+ * Volley网络请求工具类
  * Created by idisfkj on 16/4/26.
  * Email : idisfkj@qq.com.
  */

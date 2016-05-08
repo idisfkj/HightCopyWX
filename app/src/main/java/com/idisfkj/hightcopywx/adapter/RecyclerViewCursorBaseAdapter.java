@@ -13,6 +13,7 @@ import android.widget.FilterQueryProvider;
 import android.widget.Filterable;
 
 /**
+ * 自定义CursorAdapter
  * Created by idisfkj on 16/4/30.
  * Email : idisfkj@qq.com.
  */

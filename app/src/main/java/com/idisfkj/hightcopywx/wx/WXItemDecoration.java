@@ -10,6 +10,7 @@ import android.view.View;
 import com.idisfkj.hightcopywx.R;
 
 /**
+ * 自定义RecyclerView Decoration
  * Created by idisfkj on 16/4/23.
  * Email : idisfkj@qq.com.
  */

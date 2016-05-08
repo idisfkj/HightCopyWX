@@ -1,4 +1,4 @@
-package com.idisfkj.hightcopywx.main.modle;
+package com.idisfkj.hightcopywx.main.model;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -32,7 +32,7 @@ import java.util.Map;
  * Created by idisfkj on 16/5/7.
  * Email : idisfkj@qq.com.
  */
-public class SearchResultModleImp implements SearchResultModle {
+public class SearchResultModelImp implements SearchResultModel {
 
     private ProgressDialog pd;
 

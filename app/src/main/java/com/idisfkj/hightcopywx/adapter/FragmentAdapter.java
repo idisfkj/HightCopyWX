@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.idisfkj.hightcopywx.main.FragmentFactory;
 
 /**
+ * 主界面Fragment适配器
  * Created by idisfkj on 16/4/19.
  * Email : idisfkj@qq.com.
  */

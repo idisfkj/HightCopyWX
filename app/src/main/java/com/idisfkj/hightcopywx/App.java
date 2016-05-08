@@ -22,7 +22,7 @@ public class App extends Application{
     public static final String APP_KEY = "5631746467903";
     public static final String APP_SECRET_KEY = "HxMA7STSUQMLEiDX+zo+5A==";
     public static final String TAG = "com.idisfkj.hightcopywx";
-    public static final String DEVELOPER_ID = "OQTlYuVw6qN66Sskb4Nl8nvvkX9olvQSdP42qc20omE=";
+    public static final String DEVELOPER_ID = "XgX80PM5G/x0Nq4zMxQM8U5BL4zQQu7viMV1Oahl1YQ=";
     public static final String DEVELOPER_NUMBER = "666666";
     public static final String DEVELOPER_NAME = "idisfkj";
     public static final String DEVELOPER_MESSAGE = "欢迎注册高仿微信App,我是该App的开发者，你可以使用添加朋友自行互动测试！如有问题可以在此留言与我。";

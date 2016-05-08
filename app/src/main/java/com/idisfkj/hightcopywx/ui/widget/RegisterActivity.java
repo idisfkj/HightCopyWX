@@ -33,6 +33,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
+ * 注册
  * Created by idisfkj on 16/4/27.
  * Email : idisfkj@qq.com.
  */

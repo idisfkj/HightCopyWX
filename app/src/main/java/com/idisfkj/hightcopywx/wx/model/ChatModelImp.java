@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by idisfkj on 16/4/26.
  * Email : idisfkj@qq.com.
  */
-public class ChatModleImp implements ChatModle {
+public class ChatModelImp implements ChatModel {
 
     private ChatMessageInfo mChatMessageInfo;
 

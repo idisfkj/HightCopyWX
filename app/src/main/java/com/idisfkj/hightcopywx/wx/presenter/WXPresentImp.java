@@ -1,8 +1,8 @@
 package com.idisfkj.hightcopywx.wx.presenter;
 
 import com.idisfkj.hightcopywx.dao.WXDataHelper;
-import com.idisfkj.hightcopywx.wx.model.WXModle;
-import com.idisfkj.hightcopywx.wx.model.WXModleImp;
+import com.idisfkj.hightcopywx.wx.model.WXModel;
+import com.idisfkj.hightcopywx.wx.model.WXModelImp;
 import com.idisfkj.hightcopywx.wx.view.WXView;
 
 /**
@@ -11,17 +11,17 @@ import com.idisfkj.hightcopywx.wx.view.WXView;
  */
 public class WXPresentImp implements WXPresent{
 
-    private WXModle mWXModle;
+    private WXModel mWXModel;
     private WXView mWXView;
 
     public WXPresentImp(WXView wxView) {
         mWXView = wxView;
-        mWXModle = new WXModleImp();
+        mWXModel = new WXModelImp();
     }
 
     @Override
     public void initData(WXDataHelper helper) {
-        mWXModle.initData(helper);
+        mWXModel.initData(helper);
     }
 
 }

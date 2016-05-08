@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
+ * 聊天通信适配器
  * Created by idisfkj on 16/4/22.
  * Email : idisfkj@qq.com.
  */

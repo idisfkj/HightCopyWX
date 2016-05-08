@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
+ * 搜寻结果展示
  * Created by idisfkj on 16/5/7.
  * Email : idisfkj@qq.com.
  */

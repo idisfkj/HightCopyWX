@@ -6,6 +6,6 @@ import com.idisfkj.hightcopywx.dao.WXDataHelper;
  * Created by idisfkj on 16/4/23.
  * Email : idisfkj@qq.com.
  */
-public interface WXModle {
+public interface WXModel {
     void initData(WXDataHelper helper);
 }

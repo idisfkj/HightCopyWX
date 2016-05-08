@@ -11,8 +11,8 @@ import com.idisfkj.hightcopywx.beans.ChatMessageInfo;
 import com.idisfkj.hightcopywx.beans.WXItemInfo;
 import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
 import com.idisfkj.hightcopywx.dao.WXDataHelper;
-import com.idisfkj.hightcopywx.main.modle.SearchResultModle;
-import com.idisfkj.hightcopywx.main.modle.SearchResultModleImp;
+import com.idisfkj.hightcopywx.main.model.SearchResultModel;
+import com.idisfkj.hightcopywx.main.model.SearchResultModelImp;
 import com.idisfkj.hightcopywx.main.view.SearchResultView;
 import com.idisfkj.hightcopywx.util.CalendarUtils;
 import com.idisfkj.hightcopywx.util.SPUtils;
@@ -22,20 +22,20 @@ import com.idisfkj.hightcopywx.util.VolleyUtils;
  * Created by idisfkj on 16/5/7.
  * Email : idisfkj@qq.com.
  */
-public class SearchResultPresenterImp implements SearchResultPresenter, SearchResultModleImp.requestListener {
-    private SearchResultModle mModle;
+public class SearchResultPresenterImp implements SearchResultPresenter, SearchResultModelImp.requestListener {
+    private SearchResultModel mModel;
     private SearchResultView mView;
     private WXDataHelper wxHelper;
     private ChatMessageDataHelper chatHelper;
 
     public SearchResultPresenterImp(SearchResultView View) {
         this.mView = View;
-        mModle = new SearchResultModleImp();
+        mModel = new SearchResultModelImp();
     }
 
     @Override
     public void checkSelection(Context context, String number, View view, SearchResultAdapter adapter) {
-        mModle.buildDialog(context,number,view,adapter,this);
+        mModel.buildDialog(context,number,view,adapter,this);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.idisfkj.hightcopywx.util;
 import android.database.Cursor;
 
 /**
+ * cursor数据获取工具类
  * Created by idisfkj on 16/4/30.
  * Email : idisfkj@qq.com.
  */

@@ -13,7 +13,7 @@ import java.util.List;
  * Created by idisfkj on 16/4/23.
  * Email : idisfkj@qq.com.
  */
-public class WXModleImp implements WXModle {
+public class WXModelImp implements WXModel {
     private List<WXItemInfo> mList;
     private WXItemInfo wxItemInfo;
 

@@ -8,6 +8,7 @@ import com.idisfkj.hightcopywx.me.MeFragment;
 import com.idisfkj.hightcopywx.wx.widget.WXFragment;
 
 /**
+ * Fragment工厂
  * Created by idisfkj on 16/4/19.
  * Email : idisfkj@qq.com.
  */

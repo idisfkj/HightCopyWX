@@ -22,6 +22,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
+ * 添加朋友
  * Created by idisfkj on 16/5/6.
  * Email : idisfkj@qq.com.
  */

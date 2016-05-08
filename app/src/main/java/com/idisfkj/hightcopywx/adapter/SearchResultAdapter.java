@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
+ * 搜寻好友适配器
  * Created by idisfkj on 16/5/7.
  * Email : idisfkj@qq.com.
  */

@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
+ * 欢迎界面
  * Created by idisfkj on 16/4/18.
  * Email : idisfkj@qq.com.
  */
