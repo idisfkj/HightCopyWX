@@ -1,18 +1,25 @@
 package com.idisfkj.hightcopywx.xiaomi;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.idisfkj.hightcopywx.App;
+import com.idisfkj.hightcopywx.R;
 import com.idisfkj.hightcopywx.beans.ChatMessageInfo;
 import com.idisfkj.hightcopywx.beans.RegisterInfo;
 import com.idisfkj.hightcopywx.beans.WXItemInfo;
 import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
 import com.idisfkj.hightcopywx.dao.RegisterDataHelper;
 import com.idisfkj.hightcopywx.dao.WXDataHelper;
+import com.idisfkj.hightcopywx.main.widget.MainActivity;
 import com.idisfkj.hightcopywx.util.CalendarUtils;
 import com.idisfkj.hightcopywx.util.CursorUtils;
 import com.idisfkj.hightcopywx.util.SPUtils;
@@ -41,6 +48,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
     private String mEndTime;
     private ChatMessageDataHelper chatHelper;
     private Intent intent;
+    private NotificationManager manager;
 
     /**
      * 接收服务器发送的透传消息
@@ -56,7 +64,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
         } else if (!TextUtils.isEmpty(message.getAlias())) {
             mAlias = message.getAlias();
         }
-//        Log.d("TAG", "message:" + mMessage);
+        Log.d("TAG", "message:" + mMessage);
         intent = new Intent();
         chatHelper = new ChatMessageDataHelper(App.getAppContext());
 
@@ -222,9 +230,11 @@ public class WXMessageReceiver extends PushMessageReceiver {
 
         int index2 = extraMessage.indexOf("@");
         int index3 = extraMessage.indexOf("@", index2 + 1);
+        int index4 = extraMessage.indexOf("@",index3+1);
         String receiverNumber = extraMessage.substring(0, index2);
         String regId = extraMessage.substring(index2 + 1, index3);
-        String sendNumber = extraMessage.substring(index3 + 1);
+        String sendNumber = extraMessage.substring(index3 + 1,index4);
+        String userName = extraMessage.substring(index4+1);
 
         ChatMessageInfo chatMessageInfo = new ChatMessageInfo(rMessage, 0, CalendarUtils.getCurrentDate()
                 , receiverNumber, regId, sendNumber);
@@ -240,6 +250,30 @@ public class WXMessageReceiver extends PushMessageReceiver {
         } else {
             //不在当前聊天界面
             chatHelper.insert(chatMessageInfo);
+
+            manager = (NotificationManager) App.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            Intent intent = new Intent(App.getAppContext(), MainActivity.class);
+            //防止开启重复的Activity
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Bundle bundle = new Bundle();
+            //防止pendingIntent相同
+            intent.setData(Uri.parse("message://"+regId));
+            bundle.putString("regId", regId);
+            bundle.putString("number", receiverNumber);
+            bundle.putString("userName", userName);
+            intent.putExtras(bundle);
+            PendingIntent pi = PendingIntent.getActivity(App.getAppContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            Notification notification = new Notification.Builder(App.getAppContext())
+                    .setSmallIcon(R.drawable.icon)
+                    .setAutoCancel(true)
+                    .setTicker("你有新消息")
+                    .setContentTitle(userName)
+                    .setContentText(rMessage)
+                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                    .setContentIntent(pi)
+                    .setWhen(System.currentTimeMillis())
+                    .build();
+            manager.notify(Integer.parseInt(sendNumber), notification);
         }
     }
 
@@ -247,8 +281,8 @@ public class WXMessageReceiver extends PushMessageReceiver {
         int index1 = message.indexOf("&");
         int index2 = message.indexOf("@");
         String userName = message.substring(0, index1);
-        String number= message.substring(index1 + 1, index2);
-        String regId = message.substring(index2+1);
+        String number = message.substring(index1 + 1, index2);
+        String regId = message.substring(index2 + 1);
         String currentAccount = SPUtils.getString("userPhone");
         WXItemInfo itemInfo = new WXItemInfo();
         itemInfo.setTitle(userName);
@@ -262,8 +296,8 @@ public class WXMessageReceiver extends PushMessageReceiver {
         wxHelper.insert(itemInfo);
 
         //插入系统消息
-        ChatMessageInfo chatInfo = new ChatMessageInfo(String.format(App.HELLO_MESSAGE,userName),2,
-                CalendarUtils.getCurrentDate(),currentAccount,regId,number);
+        ChatMessageInfo chatInfo = new ChatMessageInfo(String.format(App.HELLO_MESSAGE, userName), 2,
+                CalendarUtils.getCurrentDate(), currentAccount, regId, number);
         chatHelper.insert(chatInfo);
     }
 }

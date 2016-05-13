@@ -1,7 +1,9 @@
 package com.idisfkj.hightcopywx.main.widget;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.idisfkj.hightcopywx.main.presenter.MainPresenter;
 import com.idisfkj.hightcopywx.main.presenter.MainPresenterImp;
 import com.idisfkj.hightcopywx.main.view.MainView;
 import com.idisfkj.hightcopywx.ui.BaseActivity;
+import com.idisfkj.hightcopywx.wx.widget.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,7 @@ public class MainActivity extends BaseActivity implements MainView {
     private List<ImageView> mListImage = new ArrayList<>();
     private List<TextView> mListText = new ArrayList<>();
     private int[] viewId;
+    private Bundle bundle;
 
 
     @Override
@@ -54,6 +58,12 @@ public class MainActivity extends BaseActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         init();
+        //是否是点击通知跳转
+        bundle = getIntent().getExtras();
+        if (bundle !=null){
+            Log.d("TAG", bundle.getString("regId"));
+            mMainPresenter.switchActivity();
+        }
     }
 
 
@@ -147,6 +157,14 @@ public class MainActivity extends BaseActivity implements MainView {
                 mListText.get(i).setAlpha(0f);
             }
         }
+    }
+
+    @Override
+    public void jumpChatActivity() {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtras(bundle);
+        Log.d("TAG", "ASD" + bundle.getString("regId"));
+        startActivity(intent);
     }
 
     @OnClick({R.id.ll_wx, R.id.ll_address, R.id.ll_find, R.id.ll_me})

@@ -37,4 +37,9 @@ public class MainPresenterImp implements MainPresenter {
         }
         mMianViw.switchAlpha(id);
     }
+
+    @Override
+    public void switchActivity() {
+        mMianViw.jumpChatActivity();
+    }
 }

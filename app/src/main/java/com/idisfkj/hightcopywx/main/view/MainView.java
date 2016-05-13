@@ -6,8 +6,14 @@ package com.idisfkj.hightcopywx.main.view;
  */
 public interface MainView {
     void switchWX();
+
     void switchAddressBook();
+
     void switchFind();
+
     void switchMe();
+
     void switchAlpha(int id);
+
+    void jumpChatActivity();
 }

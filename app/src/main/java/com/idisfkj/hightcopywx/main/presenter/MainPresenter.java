@@ -6,4 +6,6 @@ package com.idisfkj.hightcopywx.main.presenter;
  */
 public interface MainPresenter {
     void switchNavigation(int id);
+
+    void switchActivity();
 }

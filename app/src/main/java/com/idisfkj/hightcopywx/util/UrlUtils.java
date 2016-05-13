@@ -24,6 +24,7 @@ public class UrlUtils {
 
     /**
      * 聊天URl
+     *
      * @param message
      * @param number
      * @param regId
@@ -33,7 +34,8 @@ public class UrlUtils {
         String content = null;
         try {
             content = URLEncoder.encode(message + "(" + number + "@" +
-                    SPUtils.getString("regId", "") + "@" + SPUtils.getString("userPhone", ""), "UTF-8");
+                    SPUtils.getString("regId", "") + "@" + SPUtils.getString("userPhone", "") + "@" +
+                    SPUtils.getString("userName"), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -49,6 +51,7 @@ public class UrlUtils {
 
     /**
      * 添加朋友Url
+     *
      * @param regId
      * @return
      */
@@ -72,6 +75,7 @@ public class UrlUtils {
 
     /**
      * 注册URl
+     *
      * @param userName
      * @param number
      * @return
