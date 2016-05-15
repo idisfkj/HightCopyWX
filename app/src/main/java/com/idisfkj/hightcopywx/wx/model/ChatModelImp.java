@@ -84,7 +84,7 @@ public class ChatModelImp implements ChatModel {
             String mNumber = CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.NUMBER);
             String userName = CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TITLE);
             int unReadNum = CursorUtils.formatInt(cursor, WXDataHelper.WXItemDataInfo.UNREAD_NUM);
-            listener.onSucceed(mRegId,mNumber,userName,unReadNum);
+            listener.onSucceed(mRegId, mNumber, userName, unReadNum);
         }
         cursor.close();
         wxHelper = null;
@@ -94,7 +94,7 @@ public class ChatModelImp implements ChatModel {
     public void updateUnReadNum(Context context, String regId, String number, int unReadNum) {
         SPUtils.putInt("unReadNum", SPUtils.getInt("unReadNum") - unReadNum).commit();
         WXDataHelper wxHelper = new WXDataHelper(context);
-        wxHelper.update(0,regId,number);
+        wxHelper.update(0, regId, number);
         wxHelper = null;
     }
 
@@ -104,11 +104,13 @@ public class ChatModelImp implements ChatModel {
         WXDataHelper wxHelper = new WXDataHelper(context);
         Cursor cursor = chatHelper.query(number, regId);
         String lasterContent = null;
-        if (cursor.moveToFirst()){
+        String time = null;
+        if (cursor.moveToFirst()) {
             lasterContent = CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE);
+            time = CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.TIME);
         }
         cursor.close();
-        wxHelper.update(lasterContent, regId, number);
+        wxHelper.update(lasterContent, time, regId, number);
         chatHelper = null;
         wxHelper = null;
     }

@@ -2,7 +2,9 @@
 
 ![效果图](https://github.com/idisfkj/HightCopyWX/raw/master/image/hightcopywx.gif)
 
-![效果图](https://github.com/idisfkj/HightCopyWX/raw/master/image/hightcopywx3.gif))
+![效果图](https://github.com/idisfkj/HightCopyWX/raw/master/image/hightcopywx3.gif)
+
+![效果图](https://github.com/idisfkj/HightCopyWX/raw/master/image/hightcopywx4.gif)
 
 # 详情
 
@@ -10,8 +12,9 @@
 
 [Android高仿微信之mvp实现(二)](http://idisfkj.github.io/2016/05/01/Android%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E4%B9%8Bmvp%E5%AE%9E%E7%8E%B0-%E4%BA%8C/)
 
-[Android高仿微信之mvp实现(二)](http://idisfkj.github.io/2016/05/08/Android%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E4%B9%8Bmvp%E5%AE%9E%E7%8E%B0-%E4%B8%89/)
+[Android高仿微信之mvp实现(三)](http://idisfkj.github.io/2016/05/08/Android%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E4%B9%8Bmvp%E5%AE%9E%E7%8E%B0-%E4%B8%89/)
 
+[Android高仿微信之mvp实现(四)](http://idisfkj.github.io/2016/05/15/Android%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E4%B9%8Bmvp%E5%AE%9E%E7%8E%B0-%E5%9B%9B/)
 # License
  
 Copyright (c) 2016 idisfkj

@@ -56,9 +56,9 @@ public class ChatMessageDataHelper extends BaseDataHelper {
     }
 
     public Cursor query(String receiverNumber, String regId) {
-        Cursor cursor = query(new String[]{ChatMessageDataInfo.MESSAGE}, "("+ChatMessageDataInfo.RECEIVER_NUMBER + "=?" + " OR "
+        Cursor cursor = query(new String[]{ChatMessageDataInfo.MESSAGE, ChatMessageDataInfo.TIME}, "(" + ChatMessageDataInfo.RECEIVER_NUMBER + "=?" + " OR "
                 + ChatMessageDataInfo.SEND_NUMBER + "=?" + ") AND "
-                + ChatMessageDataInfo.REGID + "=?", new String[]{receiverNumber, receiverNumber, regId}, ChatMessageDataInfo._ID+" DESC");
+                + ChatMessageDataInfo.REGID + "=?", new String[]{receiverNumber, receiverNumber, regId}, ChatMessageDataInfo._ID + " DESC");
         return cursor;
     }
 
@@ -78,9 +78,9 @@ public class ChatMessageDataHelper extends BaseDataHelper {
     }
 
     public CursorLoader getCursorLoader(String receiverNumber, String regId) {
-        return getCursorLoader(null,"("+ChatMessageDataInfo.SEND_NUMBER+"=?"+" OR "
-                + ChatMessageDataInfo.RECEIVER_NUMBER+ "=?"+ ") AND "
-                + ChatMessageDataInfo.REGID+"=?", new String[]{receiverNumber,receiverNumber,regId}
+        return getCursorLoader(null, "(" + ChatMessageDataInfo.SEND_NUMBER + "=?" + " OR "
+                + ChatMessageDataInfo.RECEIVER_NUMBER + "=?" + ") AND "
+                + ChatMessageDataInfo.REGID + "=?", new String[]{receiverNumber, receiverNumber, regId}
                 , ChatMessageDataInfo._ID + " ASC");
     }
 }

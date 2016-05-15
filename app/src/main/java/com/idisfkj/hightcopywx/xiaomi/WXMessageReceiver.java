@@ -270,7 +270,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
             intent.setAction("com.idisfkj.hightcopywx.main");
             App.getAppContext().sendBroadcast(intent);
 
-            wxHelper.update(rMessage, regId, sendNumber);
+            wxHelper.update(rMessage, CalendarUtils.getCurrentDate(), regId, sendNumber);
 
             if (isApp2Background()) {
                 manager = (NotificationManager) App.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -280,7 +280,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
                 Bundle bundle = new Bundle();
                 //防止pendingIntent相同
                 intent.setData(Uri.parse("message://" + regId));
-                bundle.putInt("_id",_id);
+                bundle.putInt("_id", _id);
                 intent.putExtras(bundle);
                 PendingIntent pi = PendingIntent.getActivity(App.getAppContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
                 Notification notification = new Notification.Builder(App.getAppContext())

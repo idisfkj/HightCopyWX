@@ -82,9 +82,10 @@ public class WXDataHelper extends BaseDataHelper {
         insert(values);
     }
 
-    public int update(String content, String regId, String number) {
+    public int update(String content, String time, String regId, String number) {
         ContentValues values = new ContentValues();
         values.put(WXItemDataInfo.CONTENT, content);
+        values.put(WXItemDataInfo.TIME, time);
         int row = update(values, WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
                 , new String[]{regId, number});
         return row;
