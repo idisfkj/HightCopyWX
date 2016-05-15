@@ -24,4 +24,18 @@ public class SPUtils {
         String result = App.sp.getString(key,defValue);
         return result;
     }
+
+    public static SharedPreferences.Editor putInt(String key,int number){
+        App.editor = App.sp.edit();
+        App.editor.putInt(key,number);
+        return App.editor;
+    }
+
+    public static int getInt(String key, int defValue){
+        return  App.sp.getInt(key,defValue);
+    }
+
+    public static int getInt(String key){
+        return App.sp.getInt(key,0);
+    }
 }

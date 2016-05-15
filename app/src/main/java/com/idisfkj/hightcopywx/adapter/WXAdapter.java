@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import com.idisfkj.hightcopywx.R;
 import com.idisfkj.hightcopywx.dao.WXDataHelper;
+import com.idisfkj.hightcopywx.util.BadgeViewUtils;
 import com.idisfkj.hightcopywx.util.CursorUtils;
+import com.readystatesoftware.viewbadger.BadgeView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -24,15 +26,17 @@ import butterknife.InjectView;
 public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolder> implements View.OnClickListener {
     private LayoutInflater mLayoutInflater;
     private OnItemClickListener mOnItemClickListener;
+    private Context mContext;
 
     public WXAdapter(Context context) {
-        super(context,null);
+        super(context, null);
         mLayoutInflater = LayoutInflater.from(context);
+        mContext = context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mLayoutInflater.inflate(R.layout.wx_item, parent,false);
+        View view = mLayoutInflater.inflate(R.layout.wx_item, parent, false);
         view.setOnClickListener(this);
         return new ViewHolder(view);
     }
@@ -42,6 +46,14 @@ public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolde
         holder.wxItemTitle.setText(CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TITLE));
         holder.wxItemContent.setText(CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.CONTENT));
         holder.wxItemTime.setText(CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TIME));
+        holder.unReadNum = CursorUtils.formatInt(cursor, WXDataHelper.WXItemDataInfo.UNREAD_NUM);
+        //回收 防止影响更新
+        if (holder.badgeView != null)
+            holder.badgeView.hide();
+        if (holder.unReadNum > 0) {
+            //显示未读信息数
+            holder.badgeView = BadgeViewUtils.create(mContext, holder.wxItemPicture, String.valueOf(holder.unReadNum));
+        }
         holder.wxItemTitle.getRootView().setId(cursor.getPosition());
     }
 
@@ -50,7 +62,7 @@ public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolde
         mOnItemClickListener.onItemClick(v);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.wx_item_picture)
         ImageView wxItemPicture;
         @InjectView(R.id.wx_item_title)
@@ -59,6 +71,8 @@ public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolde
         TextView wxItemTime;
         @InjectView(R.id.wx_item_content)
         TextView wxItemContent;
+        public int unReadNum;
+        public BadgeView badgeView;
 
         ViewHolder(View view) {
             super(view);
@@ -66,11 +80,11 @@ public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolde
         }
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(View view);
     }
 }

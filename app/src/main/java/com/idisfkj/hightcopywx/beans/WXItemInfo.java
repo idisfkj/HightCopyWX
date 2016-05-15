@@ -13,6 +13,16 @@ public class WXItemInfo {
     private String number;
     private String currentAccount;
 
+    public int getUnReadNum() {
+        return unReadNum;
+    }
+
+    public void setUnReadNum(int unReadNum) {
+        this.unReadNum = unReadNum;
+    }
+
+    private int unReadNum;
+
     public String getCurrentAccount() {
         return currentAccount;
     }

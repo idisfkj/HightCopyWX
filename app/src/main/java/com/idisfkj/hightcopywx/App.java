@@ -27,6 +27,7 @@ public class App extends Application{
     public static final String DEVELOPER_NAME = "idisfkj";
     public static final String DEVELOPER_MESSAGE = "欢迎注册高仿微信App,我是该App的开发者，你可以使用添加朋友自行互动测试！如有问题可以在此留言与我。";
     public static final String HELLO_MESSAGE = "你已添加了%s，现在可以开始聊天了";
+    public static final String UNREADNUM = "unReadNum";
     public static String mNumber = "-1";
     public static String mRegId = "-1";
     public static SharedPreferences sp;

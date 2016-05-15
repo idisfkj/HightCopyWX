@@ -1,5 +1,6 @@
 package com.idisfkj.hightcopywx.xiaomi;
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -230,11 +231,11 @@ public class WXMessageReceiver extends PushMessageReceiver {
 
         int index2 = extraMessage.indexOf("@");
         int index3 = extraMessage.indexOf("@", index2 + 1);
-        int index4 = extraMessage.indexOf("@",index3+1);
+        int index4 = extraMessage.indexOf("@", index3 + 1);
         String receiverNumber = extraMessage.substring(0, index2);
         String regId = extraMessage.substring(index2 + 1, index3);
-        String sendNumber = extraMessage.substring(index3 + 1,index4);
-        String userName = extraMessage.substring(index4+1);
+        String sendNumber = extraMessage.substring(index3 + 1, index4);
+        String userName = extraMessage.substring(index4 + 1);
 
         ChatMessageInfo chatMessageInfo = new ChatMessageInfo(rMessage, 0, CalendarUtils.getCurrentDate()
                 , receiverNumber, regId, sendNumber);
@@ -249,31 +250,52 @@ public class WXMessageReceiver extends PushMessageReceiver {
             App.getAppContext().sendBroadcast(intent);
         } else {
             //不在当前聊天界面
+
             chatHelper.insert(chatMessageInfo);
 
-            manager = (NotificationManager) App.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            Intent intent = new Intent(App.getAppContext(), MainActivity.class);
-            //防止开启重复的Activity
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            Bundle bundle = new Bundle();
-            //防止pendingIntent相同
-            intent.setData(Uri.parse("message://"+regId));
-            bundle.putString("regId", regId);
-            bundle.putString("number", receiverNumber);
-            bundle.putString("userName", userName);
-            intent.putExtras(bundle);
-            PendingIntent pi = PendingIntent.getActivity(App.getAppContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            Notification notification = new Notification.Builder(App.getAppContext())
-                    .setSmallIcon(R.drawable.icon)
-                    .setAutoCancel(true)
-                    .setTicker("你有新消息")
-                    .setContentTitle(userName)
-                    .setContentText(rMessage)
-                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
-                    .setContentIntent(pi)
-                    .setWhen(System.currentTimeMillis())
-                    .build();
-            manager.notify(Integer.parseInt(sendNumber), notification);
+            SPUtils.putInt("unReadNum", SPUtils.getInt("unReadNum") + 1).commit();
+            WXDataHelper wxHelper = new WXDataHelper(App.getAppContext());
+
+            Cursor cursor = wxHelper.query(sendNumber, regId, userName);
+            int unReadNum = 0;
+            int _id = 0;
+            if (cursor.moveToFirst()) {
+                //更新目标未读消息数
+                unReadNum = CursorUtils.formatInt(cursor, WXDataHelper.WXItemDataInfo.UNREAD_NUM);
+                _id = CursorUtils.formatInt(cursor, WXDataHelper.WXItemDataInfo._ID);
+                wxHelper.update(++unReadNum, regId, sendNumber);
+                cursor.close();
+            }
+
+            //更新main未读消息数
+            intent.setAction("com.idisfkj.hightcopywx.main");
+            App.getAppContext().sendBroadcast(intent);
+
+            wxHelper.update(rMessage, regId, sendNumber);
+
+            if (isApp2Background()) {
+                manager = (NotificationManager) App.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                Intent intent = new Intent(App.getAppContext(), MainActivity.class);
+                //防止开启重复的Activity
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Bundle bundle = new Bundle();
+                //防止pendingIntent相同
+                intent.setData(Uri.parse("message://" + regId));
+                bundle.putInt("_id",_id);
+                intent.putExtras(bundle);
+                PendingIntent pi = PendingIntent.getActivity(App.getAppContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                Notification notification = new Notification.Builder(App.getAppContext())
+                        .setSmallIcon(R.drawable.icon)
+                        .setAutoCancel(true)
+                        .setTicker("高仿微信有新消息")
+                        .setContentTitle(userName)
+                        .setContentText("[" + unReadNum + "条] " + rMessage)
+                        .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS)
+                        .setContentIntent(pi)
+                        .setWhen(System.currentTimeMillis())
+                        .build();
+                manager.notify(_id, notification);
+            }
         }
     }
 
@@ -300,4 +322,24 @@ public class WXMessageReceiver extends PushMessageReceiver {
                 CalendarUtils.getCurrentDate(), currentAccount, regId, number);
         chatHelper.insert(chatInfo);
     }
+
+    public boolean isApp2Background() {
+        ActivityManager manager = (ActivityManager) App.getAppContext().getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> processInfos = manager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo infos : processInfos) {
+            if (infos.processName.equals(App.getAppContext().getPackageName())) {
+                if (infos.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_SERVICE) {
+                    Log.d("TAG", "onBackground");
+                    return true;
+                } else {
+                    Log.d("TAG", "processName:" + infos.processName);
+                    Log.d("TAG", "Running:" + infos.importance);
+                    Log.d("TAG", "Running:" + ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND);
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
 }

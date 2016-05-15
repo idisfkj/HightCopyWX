@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import com.idisfkj.hightcopywx.R;
 import com.idisfkj.hightcopywx.adapter.WXAdapter;
 import com.idisfkj.hightcopywx.dao.WXDataHelper;
-import com.idisfkj.hightcopywx.util.CursorUtils;
 import com.idisfkj.hightcopywx.util.SPUtils;
 import com.idisfkj.hightcopywx.wx.WXItemDecoration;
 import com.idisfkj.hightcopywx.wx.presenter.WXPresent;
@@ -37,7 +36,6 @@ public class WXFragment extends Fragment implements WXView, WXAdapter.OnItemClic
     private WXAdapter wxAdapter;
     private WXPresent mWXPresent;
     private WXDataHelper mHelper;
-    private Cursor cursor;
 
     @Nullable
     @Override
@@ -69,18 +67,7 @@ public class WXFragment extends Fragment implements WXView, WXAdapter.OnItemClic
     public void onItemClick(View v) {
         Intent intent = new Intent(getActivity(), ChatActivity.class);
         Bundle bundle = new Bundle();
-        cursor = wxAdapter.getCursor();
-        if (v.getId() >= 9)
-            cursor = mHelper.query(v.getId() + 2);
-        else cursor = mHelper.query(v.getId() + 1);
-        if (cursor.moveToFirst()) {
-            bundle.putString("regId", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.REGID));
-            bundle.putString("number", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.NUMBER));
-            bundle.putString("userName", CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.TITLE));
-//            ToastUtils.showShort("id:" + v.getId() + 1 + "regId:" + CursorUtils.formatString(cursor, WXDataHelper.WXItemDataInfo.REGID)
-//                    + "sendRegId:" + SPUtils.getString("regId"));
-        }
-        cursor.close();
+        bundle.putInt("_id",v.getId()+1);
         intent.putExtras(bundle);
         startActivity(intent);
     }

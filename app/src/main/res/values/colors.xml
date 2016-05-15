@@ -10,4 +10,5 @@
     <color name="decoration_color">#d7cfcf</color>
     <color name="action_bar_color">#0d0c0c</color>
     <color name="tiem_bg_color">#f4cac7c7</color>
+    <color name="dot_color">#ff0000</color>
 </resources>

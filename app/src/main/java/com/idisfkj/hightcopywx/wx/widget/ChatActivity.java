@@ -1,6 +1,7 @@
 package com.idisfkj.hightcopywx.wx.widget;
 
 import android.app.LoaderManager;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,9 +23,7 @@ import com.idisfkj.hightcopywx.App;
 import com.idisfkj.hightcopywx.R;
 import com.idisfkj.hightcopywx.adapter.ChatAdapter;
 import com.idisfkj.hightcopywx.dao.ChatMessageDataHelper;
-import com.idisfkj.hightcopywx.dao.WXDataHelper;
 import com.idisfkj.hightcopywx.ui.BaseActivity;
-import com.idisfkj.hightcopywx.util.CursorUtils;
 import com.idisfkj.hightcopywx.util.VolleyUtils;
 import com.idisfkj.hightcopywx.wx.presenter.ChatPresenter;
 import com.idisfkj.hightcopywx.wx.presenter.ChatPresenterImp;
@@ -54,8 +54,8 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
     private InputMethodManager manager;
     private ChatMessageDataHelper chatHelper;
     private String userName;
-    private String lasterContent;
-    private WXDataHelper wxHelper;
+    private int unReadNum;
+    private int _id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +63,20 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
         setContentView(R.layout.chat_layout);
         ButterKnife.inject(this);
         Bundle bundle = getIntent().getExtras();
-        App.mRegId = bundle.getString("regId");
-        App.mNumber = bundle.getString("number");
-        userName = bundle.getString("userName");
-        getActionBar().setTitle(userName);
+        _id = bundle.getInt("_id");
+
+        mChatPresenter = new ChatPresenterImp(this);
+        mChatPresenter.loadData(this, _id);
+
+        NotificationManager manager = (NotificationManager) App.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(_id);
+
         init();
 
+        if (unReadNum > 0) {
+            mChatPresenter.cleanUnReadNum(this, App.mRegId, App.mNumber, unReadNum);
+        }
+        getActionBar().setTitle(userName);
     }
 
     public void init() {
@@ -78,8 +86,6 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
         filter.addAction(ACTION_FILTER);
         this.registerReceiver(receiver, filter);
 
-        wxHelper = new WXDataHelper(this);
-        mChatPresenter = new ChatPresenterImp(this);
         chatHelper = new ChatMessageDataHelper(this);
         mChatAdapter = new ChatAdapter(this);
         chatView.setLayoutManager(new LinearLayoutManager(this));
@@ -133,11 +139,21 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
         mChatAdapter.changeCursor(null);
     }
 
+    @Override
+    public void loadUserInfo(String regId, String number, String userName, int unReadNum) {
+        App.mRegId = regId;
+        App.mNumber = number;
+        this.userName = userName;
+        this.unReadNum = unReadNum;
+        Log.d("TAG",App.mRegId);
+        Log.d("TAG",App.mNumber);
+        Log.d("TAG",this.userName);
+    }
+
     private class ChatBroadCastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            lasterContent = intent.getExtras().getString("message");
             mChatPresenter.receiveData(intent, chatHelper);
         }
     }
@@ -145,7 +161,6 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
     @OnClick(R.id.chat_send)
     public void onClick() {
         mChatContent = chatContent.getText().toString();
-        lasterContent = mChatContent;
         if (mChatContent.trim().length() > 0) {
             mChatPresenter.sendData(mChatContent, App.mNumber, App.mRegId, chatHelper);
         }
@@ -153,15 +168,10 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         //更新数据
-        Cursor cursor = chatHelper.query(App.mNumber, App.mRegId);
-        if (cursor.moveToFirst()){
-            lasterContent = CursorUtils.formatString(cursor, ChatMessageDataHelper.ChatMessageDataInfo.MESSAGE);
-        }
-        cursor.close();
-        wxHelper.update(lasterContent,App.mRegId,App.mNumber);
+        mChatPresenter.updateLasterContent(this, App.mRegId, App.mNumber);
         //重置数据
         App.mNumber = "-1";
         App.mRegId = "-1";

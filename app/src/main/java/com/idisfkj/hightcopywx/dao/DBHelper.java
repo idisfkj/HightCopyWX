@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "hightcopywx.db";
-    private static final int VERSION = 4;
+    private static final int VERSION = 5;
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -25,7 +25,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        WXDataHelper.WXItemDataInfo.TABLE.delete(db);
-        onCreate(db);
+        if (newVersion == 5){
+            db.execSQL("ALTER TABLE "+ WXDataHelper.WXItemDataInfo.TABLE_NAME
+                    + " ADD "+ WXDataHelper.WXItemDataInfo.UNREAD_NUM+" default '0'");
+        }
+        if (newVersion == 4) {
+            WXDataHelper.WXItemDataInfo.TABLE.delete(db);
+            onCreate(db);
+        }
     }
 }

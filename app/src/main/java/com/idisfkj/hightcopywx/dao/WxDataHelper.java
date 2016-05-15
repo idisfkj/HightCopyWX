@@ -37,6 +37,7 @@ public class WXDataHelper extends BaseDataHelper {
         public static final String REGID = "regId";
         public static final String NUMBER = "number";
         public static final String CURRENT_ACCOUNT = "currentAccount";
+        public static final String UNREAD_NUM = "unReadNum";
 
         public static final SQLiteTable TABLE = new SQLiteTable(TABLE_NAME)
                 .addColumn(PICTURE_URL, Column.DataType.TEXT)
@@ -45,7 +46,8 @@ public class WXDataHelper extends BaseDataHelper {
                 .addColumn(TIME, Column.DataType.TEXT)
                 .addColumn(REGID, Column.DataType.TEXT)
                 .addColumn(NUMBER, Column.DataType.TEXT)
-                .addColumn(CURRENT_ACCOUNT, Column.DataType.TEXT);
+                .addColumn(CURRENT_ACCOUNT, Column.DataType.TEXT)
+                .addColumn(UNREAD_NUM, Column.DataType.INTEGER);
     }
 
     public ContentValues getContentValues(WXItemInfo itemInfo) {
@@ -57,6 +59,7 @@ public class WXDataHelper extends BaseDataHelper {
         values.put(WXItemDataInfo.REGID, itemInfo.getRegId());
         values.put(WXItemDataInfo.NUMBER, itemInfo.getNumber());
         values.put(WXItemDataInfo.CURRENT_ACCOUNT, itemInfo.getCurrentAccount());
+        values.put(WXItemDataInfo.UNREAD_NUM, itemInfo.getUnReadNum());
         return values;
     }
 
@@ -82,6 +85,14 @@ public class WXDataHelper extends BaseDataHelper {
     public int update(String content, String regId, String number) {
         ContentValues values = new ContentValues();
         values.put(WXItemDataInfo.CONTENT, content);
+        int row = update(values, WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
+                , new String[]{regId, number});
+        return row;
+    }
+
+    public int update(int unReadNum, String regId, String number) {
+        ContentValues values = new ContentValues();
+        values.put(WXItemDataInfo.UNREAD_NUM, unReadNum);
         int row = update(values, WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
                 , new String[]{regId, number});
         return row;

@@ -16,4 +16,6 @@ public interface MainView {
     void switchAlpha(int id);
 
     void jumpChatActivity();
+
+    void createBadgeView();
 }

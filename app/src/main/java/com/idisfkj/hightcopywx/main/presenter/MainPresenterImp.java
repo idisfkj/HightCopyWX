@@ -42,4 +42,9 @@ public class MainPresenterImp implements MainPresenter {
     public void switchActivity() {
         mMianViw.jumpChatActivity();
     }
+
+    @Override
+    public void callBadgeView() {
+        mMianViw.createBadgeView();
+    }
 }
