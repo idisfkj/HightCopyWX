@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -145,9 +144,6 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
         App.mNumber = number;
         this.userName = userName;
         this.unReadNum = unReadNum;
-        Log.d("TAG",App.mRegId);
-        Log.d("TAG",App.mNumber);
-        Log.d("TAG",this.userName);
     }
 
     private class ChatBroadCastReceiver extends BroadcastReceiver {

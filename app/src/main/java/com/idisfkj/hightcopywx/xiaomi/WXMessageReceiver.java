@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.idisfkj.hightcopywx.App;
 import com.idisfkj.hightcopywx.R;
@@ -65,7 +64,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
         } else if (!TextUtils.isEmpty(message.getAlias())) {
             mAlias = message.getAlias();
         }
-        Log.d("TAG", "message:" + mMessage);
+//        Log.d("TAG", "message:" + mMessage);
         intent = new Intent();
         chatHelper = new ChatMessageDataHelper(App.getAppContext());
 
@@ -329,12 +328,8 @@ public class WXMessageReceiver extends PushMessageReceiver {
         for (ActivityManager.RunningAppProcessInfo infos : processInfos) {
             if (infos.processName.equals(App.getAppContext().getPackageName())) {
                 if (infos.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_SERVICE) {
-                    Log.d("TAG", "onBackground");
                     return true;
                 } else {
-                    Log.d("TAG", "processName:" + infos.processName);
-                    Log.d("TAG", "Running:" + infos.importance);
-                    Log.d("TAG", "Running:" + ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND);
                     return false;
                 }
             }
