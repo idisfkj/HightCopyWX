@@ -15,6 +15,11 @@
 [Android高仿微信之mvp实现(三)](http://idisfkj.github.io/2016/05/08/Android%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E4%B9%8Bmvp%E5%AE%9E%E7%8E%B0-%E4%B8%89/)
 
 [Android高仿微信之mvp实现(四)](http://idisfkj.github.io/2016/05/15/Android%E9%AB%98%E4%BB%BF%E5%BE%AE%E4%BF%A1%E4%B9%8Bmvp%E5%AE%9E%E7%8E%B0-%E5%9B%9B/)
+
+# 安装包下载地址
+
+[apk](http://pan.baidu.com/s/1eRVHSoq)
+
 # License
  
 Copyright (c) 2016 idisfkj
