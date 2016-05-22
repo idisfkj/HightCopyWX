@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.idisfkj.hightcopywx.R;
+import com.idisfkj.hightcopywx.adapter.OnItemTouchListener;
 import com.idisfkj.hightcopywx.adapter.WXAdapter;
 import com.idisfkj.hightcopywx.dao.WXDataHelper;
 import com.idisfkj.hightcopywx.util.SPUtils;
@@ -30,7 +31,7 @@ import butterknife.InjectView;
  * Created by idisfkj on 16/4/19.
  * Email : idisfkj@qq.com.
  */
-public class WXFragment extends Fragment implements WXView, WXAdapter.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class WXFragment extends Fragment implements WXView, LoaderManager.LoaderCallbacks<Cursor> {
     @InjectView(R.id.wx_recyclerView)
     RecyclerView wxRecyclerView;
     private WXAdapter wxAdapter;
@@ -52,7 +53,16 @@ public class WXFragment extends Fragment implements WXView, WXAdapter.OnItemClic
         wxRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         wxRecyclerView.addItemDecoration(new WXItemDecoration(getContext()));
         wxRecyclerView.setAdapter(wxAdapter);
-        wxAdapter.setOnItemClickListener(this);
+        wxRecyclerView.addOnItemTouchListener(new OnItemTouchListener(wxRecyclerView) {
+            @Override
+            public void onItemListener(RecyclerView.ViewHolder vh) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("_id", vh.getLayoutPosition()+1);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
         mHelper = new WXDataHelper(getContext());
         getLoaderManager().initLoader(0, null, this);
     }
@@ -61,15 +71,6 @@ public class WXFragment extends Fragment implements WXView, WXAdapter.OnItemClic
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
-    }
-
-    @Override
-    public void onItemClick(View v) {
-        Intent intent = new Intent(getActivity(), ChatActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt("_id",v.getId()+1);
-        intent.putExtras(bundle);
-        startActivity(intent);
     }
 
     @Override

@@ -23,9 +23,8 @@ import butterknife.InjectView;
  * Created by idisfkj on 16/4/22.
  * Email : idisfkj@qq.com.
  */
-public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolder> implements View.OnClickListener {
+public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolder> {
     private LayoutInflater mLayoutInflater;
-    private OnItemClickListener mOnItemClickListener;
     private Context mContext;
 
     public WXAdapter(Context context) {
@@ -37,7 +36,6 @@ public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolde
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mLayoutInflater.inflate(R.layout.wx_item, parent, false);
-        view.setOnClickListener(this);
         return new ViewHolder(view);
     }
 
@@ -57,11 +55,6 @@ public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolde
         holder.wxItemTitle.getRootView().setId(cursor.getPosition());
     }
 
-    @Override
-    public void onClick(View v) {
-        mOnItemClickListener.onItemClick(v);
-    }
-
     static class ViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.wx_item_picture)
         ImageView wxItemPicture;
@@ -78,13 +71,5 @@ public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolde
             super(view);
             ButterKnife.inject(this, view);
         }
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mOnItemClickListener = listener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(View view);
     }
 }
