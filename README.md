@@ -18,7 +18,7 @@
 
 # 安装包下载地址
 
-[apk](http://pan.baidu.com/s/1eRVHSoq)
+[apk](https://github.com/idisfkj/HightCopyWX/releases)
 
 # License
  
