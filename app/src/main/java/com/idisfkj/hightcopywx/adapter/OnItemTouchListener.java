@@ -42,8 +42,8 @@ public abstract class OnItemTouchListener implements RecyclerView.OnItemTouchLis
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-            child.setPressed(true);
             if (child != null) {
+                child.setPressed(true);
                 RecyclerView.ViewHolder vh = recyclerView.getChildViewHolder(child);
                 onItemListener(vh);
             }

@@ -16,6 +16,11 @@ public interface ChatPresenter {
 
     void initData(ChatMessageDataHelper helper, String mRegId, String mNumber, String userName);
 
+    /**
+     * 加载当前聊天用户状态信息
+     * @param context
+     * @param _id
+     */
     void loadData(Context context, int _id);
 
     void cleanUnReadNum(Context context, String regId, String number, int unReadNum);

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -76,6 +77,19 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
             mChatPresenter.cleanUnReadNum(this, App.mRegId, App.mNumber, unReadNum);
         }
         getActionBar().setTitle(userName);
+
+        final View root = findViewById(R.id.main);
+        root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int heightDiff = root.getRootView().getHeight() - root.getHeight();
+                if (heightDiff > 100)
+                    chatView.smoothScrollToPosition(mChatAdapter.getItemCount());
+            }
+        });
+
+//        @SuppressLint("WrongViewCast") RelativeLayoutThatDetectsSoftKeyboard chatLayout = (RelativeLayoutThatDetectsSoftKeyboard) findViewById(R.id.chat_bottm);
+//        chatLayout.setListener(this);
     }
 
     public void init() {
@@ -145,6 +159,13 @@ public class ChatActivity extends BaseActivity implements ChatView, View.OnTouch
         this.userName = userName;
         this.unReadNum = unReadNum;
     }
+
+//    @Override
+//    public void onSoftKeyboardShown(boolean isShowing) {
+//        Log.d("TAG", "Listener");
+//        if (isShowing)
+//            chatView.smoothScrollToPosition(mChatAdapter.getItemCount());
+//    }
 
     private class ChatBroadCastReceiver extends BroadcastReceiver {
 

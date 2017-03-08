@@ -195,7 +195,7 @@ public class WXMessageReceiver extends PushMessageReceiver {
                         // update user information
                         helper.update(info, number, regId);
                     cursor.close();
-                    return;
+                    break;
                 }
             }
             cursor.close();

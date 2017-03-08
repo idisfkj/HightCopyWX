@@ -100,9 +100,11 @@ public class WXDataHelper extends BaseDataHelper {
     }
 
     public int delet(String regId, String number) {
-        int row = delet(WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
-                , new String[]{regId, number});
-        return row;
+        synchronized (DataProvider.DBLock) {
+            int row = delet(WXItemDataInfo.REGID + "=?" + " AND " + WXItemDataInfo.NUMBER + "=?"
+                    , new String[]{regId, number});
+            return row;
+        }
     }
 
     public android.support.v4.content.CursorLoader getCursorLoader(String currentAccout) {

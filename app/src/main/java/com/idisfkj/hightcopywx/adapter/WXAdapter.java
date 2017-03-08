@@ -52,7 +52,7 @@ public class WXAdapter extends RecyclerViewCursorBaseAdapter<WXAdapter.ViewHolde
             //显示未读信息数
             holder.badgeView = BadgeViewUtils.create(mContext, holder.wxItemPicture, String.valueOf(holder.unReadNum));
         }
-        holder.wxItemTitle.getRootView().setId(cursor.getPosition());
+//        holder.wxItemTitle.getRootView().setId(cursor.getPosition());
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
